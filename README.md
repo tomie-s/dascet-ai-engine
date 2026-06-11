@@ -1,4 +1,4 @@
-# dascet-ai-engine
+# Dascet AI Engine
 
 An AI-powered tool recommendation engine for [Dascet](https://dascet.com) — a Canadian fintech platform helping young Canadians navigate financial products.
 
