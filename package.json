@@ -1,0 +1,26 @@
+{
+  "name": "dascet-ai-engine",
+  "version": "0.1.0",
+  "description": "AI recommendation engine for Dascet — learning project covering embeddings, RAG, and agentic workflows",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "experiment": "tsx",
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.52.0",
+    "@supabase/supabase-js": "^2.49.0",
+    "hono": "^4.7.0",
+    "openai": "^4.97.0",
+    "zod": "^3.24.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0"
+  }
+}
