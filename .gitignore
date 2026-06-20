@@ -20,3 +20,6 @@ Thumbs.db
 .vscode/
 .idea/
 *.swp
+
+# Local learning notes
+LEARNING_PLAN.md
