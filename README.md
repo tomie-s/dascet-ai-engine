@@ -37,11 +37,12 @@ This project is a hands-on learning exercise covering:
 ## Project Structure
 
 ```
+experiments/          # Phase 1–3 learning scripts (not production code)
 src/
-├── experiments/     # Phase 1 & 2 learning scripts (not production code)
-├── lib/             # Shared utilities (embeddings, supabase client, etc.)
-├── routes/          # Hono API route handlers
-└── server.ts        # API entry point
+├── lib/              # Shared utilities (embeddings, Supabase, prompts)
+├── routes/           # Hono API route handlers
+└── server.ts         # API entry point
+supabase/migrations/ # Standalone learning-database migrations
 ```
 
 ## Getting Started

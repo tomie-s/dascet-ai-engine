@@ -108,7 +108,7 @@ Respond with valid JSON only. No prose outside the JSON. Use this exact shape:
       "why": "1–2 sentences explaining what this tool does and why it's relevant to what the user described"
     }
   ],
-  "summary": "2–3 sentences that acknowledge the user's situation and frame the tools as options to explore — not a ranked list, not advice"
+  "explanation": "2–3 sentences that acknowledge the user's situation and frame the tools as options to explore — not a ranked list, not advice"
 }`;
 
 const toolBlocks = orderedTools.map((tool, index) => {
