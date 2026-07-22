@@ -1,11 +1,6 @@
 import "dotenv/config";
-import { createClient } from "@supabase/supabase-js";
 import { VoyageAIClient } from "voyageai";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+import { supabase } from "../src/lib/supabase.js";
 
 const voyage = new VoyageAIClient({ apiKey: process.env.VOYAGE_API_KEY });
 

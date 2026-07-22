@@ -1,14 +1,9 @@
 import "dotenv/config";
-import { createClient } from "@supabase/supabase-js";
 import { VoyageAIClient } from "voyageai";
 import Anthropic from "@anthropic-ai/sdk";
+import { supabase } from "../src/lib/supabase.js";
 
 const QUERY = "I'm a Canadian beginner who wants to start investing with a small amount of money";
-
-const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
 
 const voyage = new VoyageAIClient({ apiKey: process.env.VOYAGE_API_KEY });
 

@@ -2,8 +2,7 @@
   "extends": "../tsconfig.json",
   "compilerOptions": {
     "rootDir": "..",
-    "outDir": "../dist/experiments",
-    "lib": ["ES2022"],
+    "outDir": "../dist/scripts",
     "types": ["node"]
   },
   "include": ["./**/*", "../src/lib/supabase.ts"]

@@ -8,6 +8,8 @@ Dascet has 200+ curated financial tools in its database. This engine lets a user
 
 It uses embeddings, vector search, and an LLM reasoning layer to bridge the gap between "I have credit card debt and no savings" and the right set of tools to explore.
 
+The project uses its own self-contained Supabase database containing a July 2026 snapshot of the financial-tools catalogue.
+
 ## What I'm Learning
 
 This project is a hands-on learning exercise covering:
@@ -26,7 +28,7 @@ This project is a hands-on learning exercise covering:
 |---|---|
 | Language | TypeScript |
 | API | Hono |
-| Embeddings | OpenAI `text-embedding-3-small` |
+| Embeddings | Voyage AI `voyage-3-lite` |
 | LLM | Anthropic Claude |
 | Vector Store | Supabase + pgvector |
 | Validation | Zod |
@@ -51,9 +53,18 @@ npm install
 # Copy env file and fill in your keys
 cp .env.example .env
 
+# Create the standalone catalogue schema by running this migration in Supabase
+# supabase/migrations/202607220001_create_financial_tools.sql
+
 # Run an experiment script
-npm run experiment src/experiments/01-first-embedding.ts
+npm run experiment experiments/01-embed-one-tool.ts
+
+# Run the read-only Phase 1–2 regression suite
+npm run test:phase1-2
 ```
+
+The regression suite checks catalogue integrity, embedding coverage and
+dimensions, and pgvector retrieval without making paid embedding or LLM calls.
 
 ## Build Status
 

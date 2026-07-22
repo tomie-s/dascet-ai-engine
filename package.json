@@ -6,10 +6,11 @@
   "type": "module",
   "scripts": {
     "experiment": "tsx",
+    "test:phase1-2": "tsx scripts/test-phase1-2.ts",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit && tsc -p experiments/tsconfig.json --noEmit && tsc -p scripts/tsconfig.json --noEmit"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
