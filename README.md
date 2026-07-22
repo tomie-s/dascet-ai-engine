@@ -68,7 +68,7 @@ dimensions, and pgvector retrieval without making paid embedding or LLM calls.
 
 ## Build Status
 
-🟡 **Phase 1 in progress** — Foundations & Concepts
+🟡 **Phase 3 in progress** — Prompt Engineering the Recommender
 
 ---
 
