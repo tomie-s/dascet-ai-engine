@@ -62,6 +62,20 @@ npm run experiment experiments/01-embed-one-tool.ts
 
 # Run the read-only Phase 1–2 regression suite
 npm run test:phase1-2
+
+# Run the zero-cost Phase 3 prompt and API contract tests
+npm run test:phase3
+
+# Run the complete Phase 1–3 suite
+npm run test:phase1-3
+
+# Start the Phase 3 recommendation API on http://localhost:3000
+npm run dev
+
+# In another terminal, request a recommendation
+curl -X POST http://localhost:3000/recommend \
+  -H 'content-type: application/json' \
+  -d '{"message":"I am new to investing and want to start small"}'
 ```
 
 The regression suite checks catalogue integrity, embedding coverage and
@@ -69,7 +83,7 @@ dimensions, and pgvector retrieval without making paid embedding or LLM calls.
 
 ## Build Status
 
-🟡 **Phase 3 in progress** — Prompt Engineering the Recommender
+✅ **Phase 3 complete** — Prompt Engineering the Recommender
 
 ---
 
