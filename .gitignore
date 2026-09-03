@@ -9,6 +9,9 @@ node_modules/
 # Build output
 dist/
 
+# Supabase CLI cache
+supabase/.temp/
+
 # TypeScript cache
 *.tsbuildinfo
 

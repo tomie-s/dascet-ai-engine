@@ -7,13 +7,16 @@
   "scripts": {
     "experiment": "tsx",
     "test:phase1-2": "tsx scripts/test-phase1-2.ts",
+    "test:phase3": "tsx --test tests/*.test.ts",
+    "test:phase1-3": "npm run test:phase1-2 && npm run test:phase3",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
-    "typecheck": "tsc --noEmit && tsc -p experiments/tsconfig.json --noEmit && tsc -p scripts/tsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit && tsc -p experiments/tsconfig.json --noEmit && tsc -p scripts/tsconfig.json --noEmit && tsc -p tests/tsconfig.json --noEmit"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.52.0",
+    "@hono/node-server": "^2.1.1",
     "@supabase/supabase-js": "^2.49.0",
     "dotenv": "^17.4.2",
     "hono": "^4.7.0",

@@ -1,2 +1,1 @@
-// dascet-ai-engine entry point
-export {};
+export { app } from "./app.js";
