@@ -1,0 +1,12 @@
+.env
+.env.*
+!.env.example
+node_modules
+dist
+tests
+experiments
+scripts
+supabase
+.git
+*.md
+.DS_Store
