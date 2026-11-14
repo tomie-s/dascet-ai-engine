@@ -23,21 +23,22 @@ try {
     input: [QUERY],
     inputType: "query",
   });
-  embedding = response.data![0].embedding!;
+  const vector = response.data?.[0]?.embedding;
+  if (!vector || vector.length === 0) {
+    throw new Error("Voyage AI returned no embedding.");
+  }
+  embedding = vector;
 } catch (err) {
   const message = err instanceof Error ? err.message : String(err);
   console.error("Voyage AI embedding failed:", message);
   process.exit(1);
 }
 
-const { data: results, error: rpcError } = await supabase.rpc(
-  "match_financial_tools",
-  {
-    query_embedding: embedding,
-    match_threshold: 0.45,
-    match_count: 5,
-  }
-);
+const { data: results, error: rpcError } = await supabase.rpc("match_financial_tools", {
+  query_embedding: embedding,
+  match_threshold: 0.45,
+  match_count: 5,
+});
 
 if (rpcError) {
   console.error("Supabase RPC failed:", rpcError.message);

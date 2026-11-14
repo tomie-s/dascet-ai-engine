@@ -5,6 +5,14 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "lint": "biome lint . --write",
+    "lint:check": "biome lint .",
+    "lint:fix": "biome check . --write",
+    "fix:check": "biome check .",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "staged": "biome check --write --staged",
+    "type-check": "npm run typecheck",
     "experiment": "tsx",
     "test:phase1-2": "tsx scripts/test-phase1-2.ts",
     "test": "tsx --test tests/*.test.ts",
@@ -24,6 +32,7 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.14",
     "@types/node": "^22.0.0",
     "tsx": "^4.22.4",
     "typescript": "^5.8.0"

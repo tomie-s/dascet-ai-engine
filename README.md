@@ -82,6 +82,19 @@ curl -X POST http://localhost:3000/recommend \
 The regression suite checks catalogue integrity, embedding coverage and
 dimensions, and pgvector retrieval without making paid embedding or LLM calls.
 
+Code quality uses Biome:
+
+| Command | Purpose |
+| --- | --- |
+| `npm run lint:check` | Check lint rules without changing files |
+| `npm run lint` | Apply safe lint fixes |
+| `npm run format:check` | Check formatting without changing files |
+| `npm run format` | Format files |
+| `npm run fix:check` | Check lint, formatting, and import organization |
+| `npm run lint:fix` | Apply safe fixes, formatting, and import organization |
+| `npm run staged` | Apply Biome fixes to staged files |
+| `npm run type-check` | Run all TypeScript checks (alias for `typecheck`) |
+
 ## API
 
 The server validates its configuration at startup and exits with a list of

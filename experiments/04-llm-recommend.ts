@@ -1,6 +1,6 @@
 import "dotenv/config";
-import { VoyageAIClient } from "voyageai";
 import Anthropic from "@anthropic-ai/sdk";
+import { VoyageAIClient } from "voyageai";
 import { supabase } from "../src/lib/supabase.js";
 
 const QUERY = "I'm a Canadian beginner who wants to start investing with a small amount of money";
@@ -18,7 +18,11 @@ try {
     input: [QUERY],
     inputType: "query",
   });
-  embedding = response.data![0].embedding!;
+  const vector = response.data?.[0]?.embedding;
+  if (!vector || vector.length === 0) {
+    throw new Error("Voyage AI returned no embedding.");
+  }
+  embedding = vector;
 } catch (err) {
   const message = err instanceof Error ? err.message : String(err);
   console.error("Voyage AI embedding failed:", message);
@@ -26,14 +30,11 @@ try {
 }
 
 // Step 2: Get top 5 vector search results
-const { data: rpcResults, error: rpcError } = await supabase.rpc(
-  "match_financial_tools",
-  {
-    query_embedding: embedding,
-    match_threshold: 0.45,
-    match_count: 5,
-  }
-);
+const { data: rpcResults, error: rpcError } = await supabase.rpc("match_financial_tools", {
+  query_embedding: embedding,
+  match_threshold: 0.45,
+  match_count: 5,
+});
 
 if (rpcError) {
   console.error("Supabase RPC failed:", rpcError.message);
@@ -81,7 +82,7 @@ if (!tools || tools.length === 0) {
 }
 
 const orderedTools = matchedIds
-  .map(id => (tools as FinancialTool[]).find(t => t.id === id))
+  .map((id) => (tools as FinancialTool[]).find((t) => t.id === id))
   .filter((t): t is FinancialTool => t !== undefined);
 
 // Step 5: Build system prompt and user message
@@ -112,11 +113,7 @@ Respond with valid JSON only. No prose outside the JSON. Use this exact shape:
 }`;
 
 const toolBlocks = orderedTools.map((tool, index) => {
-  const lines: string[] = [
-    `Tool ${index + 1}:`,
-    `Name: ${tool.name}`,
-    `Tagline: ${tool.tagline}`,
-  ];
+  const lines: string[] = [`Tool ${index + 1}:`, `Name: ${tool.name}`, `Tagline: ${tool.tagline}`];
 
   if (tool.description) lines.push(`Description: ${tool.description}`);
 
@@ -145,7 +142,7 @@ ${toolBlocks.join("\n\n")}
 Respond using only these tools. Do not reference any tools not listed above.`;
 
 // Step 6: Call Claude
-let claudeResponse;
+let claudeResponse: Anthropic.Message;
 
 try {
   claudeResponse = await anthropic.messages.create({
@@ -161,14 +158,15 @@ try {
 }
 
 // Step 7: Parse the JSON response
-const rawText = claudeResponse.content[0].type === "text"
-  ? claudeResponse.content[0].text
-  : "";
+const rawText = claudeResponse.content[0].type === "text" ? claudeResponse.content[0].text : "";
 
-let parsed;
+let parsed: unknown;
 
 try {
-  const cleaned = rawText.replace(/^```json\s*/i, "").replace(/```\s*$/i, "").trim();
+  const cleaned = rawText
+    .replace(/^```json\s*/i, "")
+    .replace(/```\s*$/i, "")
+    .trim();
   parsed = JSON.parse(cleaned);
 } catch {
   console.error("Failed to parse Claude's response as JSON:");

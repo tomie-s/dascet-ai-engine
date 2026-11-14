@@ -19,10 +19,7 @@ type Tool = {
 };
 
 function buildToolText(tool: Tool): string {
-  const lines: string[] = [
-    `Name: ${tool.name}`,
-    `Tagline: ${tool.tagline}`,
-  ];
+  const lines: string[] = [`Name: ${tool.name}`, `Tagline: ${tool.tagline}`];
 
   if (tool.description) lines.push(`Description: ${tool.description}`);
 
@@ -94,7 +91,15 @@ for (let i = 0; i < tools.length; i += BATCH_SIZE) {
       inputType: "document",
     });
 
-    embeddings = response.data!.map((d) => d.embedding!);
+    if (!response.data || response.data.length !== batch.length) {
+      throw new Error("Voyage AI returned an unexpected number of embeddings.");
+    }
+    embeddings = response.data.map((d) => {
+      if (!d.embedding || d.embedding.length === 0) {
+        throw new Error("Voyage AI returned a missing or empty embedding.");
+      }
+      return d.embedding;
+    });
   } catch (err) {
     const message = err instanceof Error ? err.message : String(err);
     console.error(`Batch ${batchNumber} embedding failed: ${message}`);

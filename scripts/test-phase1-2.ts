@@ -59,11 +59,7 @@ async function run(): Promise<void> {
   const missingRequiredFields = tools.filter(
     (tool) => !tool.id || !tool.name.trim() || !tool.tagline.trim() || !tool.status
   );
-  assert.equal(
-    missingRequiredFields.length,
-    0,
-    "Tools with missing required fields found"
-  );
+  assert.equal(missingRequiredFields.length, 0, "Tools with missing required fields found");
   pass("required catalogue fields are populated");
 
   const approved = tools.filter((tool) => tool.status === "approved");
@@ -75,9 +71,7 @@ async function run(): Promise<void> {
     embedding: parseEmbedding(tool.embedding),
   }));
 
-  const embeddedCount = approvedEmbeddings.filter(
-    ({ embedding }) => embedding !== null
-  ).length;
+  const embeddedCount = approvedEmbeddings.filter(({ embedding }) => embedding !== null).length;
   assert.equal(embeddedCount, EXPECTED_EMBEDDED);
   pass(`${EXPECTED_EMBEDDED} approved tools have embeddings`);
 
@@ -94,20 +88,13 @@ async function run(): Promise<void> {
   const sample = approvedEmbeddings[0];
   assert(sample?.embedding, "No approved embedding available for search test");
 
-  const { data: matchData, error: matchError } = await supabase.rpc(
-    "match_financial_tools",
-    {
-      query_embedding: sample.embedding,
-      match_threshold: MATCH_THRESHOLD,
-      match_count: MATCH_COUNT,
-    }
-  );
+  const { data: matchData, error: matchError } = await supabase.rpc("match_financial_tools", {
+    query_embedding: sample.embedding,
+    match_threshold: MATCH_THRESHOLD,
+    match_count: MATCH_COUNT,
+  });
 
-  assert.equal(
-    matchError,
-    null,
-    `Vector search failed: ${matchError?.message}`
-  );
+  assert.equal(matchError, null, `Vector search failed: ${matchError?.message}`);
 
   const matches = (matchData ?? []) as MatchRow[];
   assert.equal(matches.length, MATCH_COUNT);
@@ -143,4 +130,3 @@ run().catch((error: unknown) => {
   console.error(error instanceof Error ? error.message : error);
   process.exitCode = 1;
 });
-

@@ -115,10 +115,7 @@ export function serializePromptData(value: unknown): string {
     .replace(/\u2029/g, "\\u2029");
 }
 
-export function buildRecommendationPrompt(
-  message: string,
-  tools: PromptTool[]
-): string {
+export function buildRecommendationPrompt(message: string, tools: PromptTool[]): string {
   const quantityGuidance =
     tools.length >= 2
       ? `Return at least two and at most ${tools.length} relevant products. Do not

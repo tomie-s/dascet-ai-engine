@@ -2,8 +2,8 @@ import Anthropic from "@anthropic-ai/sdk";
 import { VoyageAIClient } from "voyageai";
 import {
   buildRecommendationPrompt,
-  RECOMMENDATION_SYSTEM_PROMPT,
   type PromptTool,
+  RECOMMENDATION_SYSTEM_PROMPT,
 } from "./prompt.js";
 import { parseModelResponse } from "./recommendation-response.js";
 import { supabase } from "./supabase.js";
@@ -42,20 +42,15 @@ export async function searchTools(query: string): Promise<PromptTool[]> {
     throw new Error("Voyage AI did not return an embedding");
   }
 
-  const { data: matches, error: matchError } = await supabase.rpc(
-    "match_financial_tools",
-    {
-      query_embedding: embedding,
-      match_threshold: MATCH_THRESHOLD,
-      match_count: MATCH_COUNT,
-    }
-  );
+  const { data: matches, error: matchError } = await supabase.rpc("match_financial_tools", {
+    query_embedding: embedding,
+    match_threshold: MATCH_THRESHOLD,
+    match_count: MATCH_COUNT,
+  });
 
   if (matchError) throw new Error(`Vector search failed: ${matchError.message}`);
 
-  const matchedIds: string[] = (matches ?? []).map(
-    (row: { id: string }) => row.id
-  );
+  const matchedIds: string[] = (matches ?? []).map((row: { id: string }) => row.id);
   if (matchedIds.length === 0) return [];
 
   const { data, error: selectError } = await supabase
@@ -98,9 +93,7 @@ export async function recommend(
     max_tokens: 1024,
     temperature: 0,
     system: RECOMMENDATION_SYSTEM_PROMPT,
-    messages: [
-      { role: "user", content: buildRecommendationPrompt(message, promptTools) },
-    ],
+    messages: [{ role: "user", content: buildRecommendationPrompt(message, promptTools) }],
   });
   const rawText = response.content.find((block) => block.type === "text")?.text;
 

@@ -13,10 +13,7 @@ const validResponse = {
 };
 
 test("accepts a valid candidate-bound response", () => {
-  assert.deepEqual(
-    parseModelResponse(JSON.stringify(validResponse), candidates),
-    validResponse
-  );
+  assert.deepEqual(parseModelResponse(JSON.stringify(validResponse), candidates), validResponse);
 });
 
 test("tolerates an unnecessary JSON markdown fence", () => {

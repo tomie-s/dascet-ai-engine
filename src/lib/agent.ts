@@ -1,15 +1,15 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
-import { AGENT_SYSTEM_PROMPT, serializePromptData, type PromptTool } from "./prompt.js";
-import { validateRecommendation, type Recommendation } from "./recommendation-response.js";
+import { AGENT_SYSTEM_PROMPT, type PromptTool, serializePromptData } from "./prompt.js";
+import { type Recommendation, validateRecommendation } from "./recommendation-response.js";
 import { searchTools } from "./recommender.js";
 import {
   AGENT_LIMITS,
   AGENT_MODEL,
   AGENT_TOOLS,
   parseToolCall,
-  ToolCallError,
   type ToolCall,
+  ToolCallError,
 } from "./tools.js";
 
 /**
@@ -38,7 +38,10 @@ export const turnsSchema = z
       }
     });
     if (turns.at(-1)?.role !== "user") {
-      context.addIssue({ code: z.ZodIssueCode.custom, message: "The last turn must be from the user" });
+      context.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "The last turn must be from the user",
+      });
     }
   });
 
@@ -51,9 +54,7 @@ export type AgentResult =
   | ({ type: "clarification" } & Clarification);
 
 export type AgentDeps = {
-  createMessage: (
-    params: Anthropic.MessageCreateParamsNonStreaming
-  ) => Promise<Anthropic.Message>;
+  createMessage: (params: Anthropic.MessageCreateParamsNonStreaming) => Promise<Anthropic.Message>;
   searchTools: (query: string) => Promise<PromptTool[]>;
 };
 
@@ -88,9 +89,7 @@ function defaultDeps(): AgentDeps {
   };
 }
 
-type StepOutcome =
-  | { done: AgentResult }
-  | { toolResult: string; isError: boolean };
+type StepOutcome = { done: AgentResult } | { toolResult: string; isError: boolean };
 
 /**
  * Bounded agent loop: Claude decides whether to search, clarify, or
@@ -108,7 +107,13 @@ export async function runAgent(
   const alreadyClarified = turns.some((turn) => turn.role === "assistant");
   const candidates = new Map<string, PromptTool>();
   let searches = 0;
-  const usage = { calls: 0, inputTokens: 0, outputTokens: 0, cacheReadTokens: 0, cacheWriteTokens: 0 };
+  const usage = {
+    calls: 0,
+    inputTokens: 0,
+    outputTokens: 0,
+    cacheReadTokens: 0,
+    cacheWriteTokens: 0,
+  };
   let outcome = "fallback";
 
   function error(message: string): StepOutcome {

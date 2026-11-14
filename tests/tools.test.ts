@@ -18,11 +18,14 @@ import {
 } from "../src/lib/tools.js";
 
 function rejects(name: string, input: unknown, pattern: RegExp) {
-  assert.throws(() => parseToolCall(name, input), (error) => {
-    assert.ok(error instanceof ToolCallError);
-    assert.match(error.message, pattern);
-    return true;
-  });
+  assert.throws(
+    () => parseToolCall(name, input),
+    (error) => {
+      assert.ok(error instanceof ToolCallError);
+      assert.match(error.message, pattern);
+      return true;
+    }
+  );
 }
 
 // --- search_tools ---
@@ -65,10 +68,17 @@ for (const testCase of [
     name: "six choices",
     input: { question: "Which one?", choices: ["a", "b", "c", "d", "e", "f"] },
   },
-  { name: "an overlong choice", input: { question: "Which one?", choices: ["ok", "x".repeat(61)] } },
+  {
+    name: "an overlong choice",
+    input: { question: "Which one?", choices: ["ok", "x".repeat(61)] },
+  },
 ]) {
   test(`ask_clarifying_question rejects ${testCase.name}`, () => {
-    rejects("ask_clarifying_question", testCase.input, /^Invalid input for ask_clarifying_question/);
+    rejects(
+      "ask_clarifying_question",
+      testCase.input,
+      /^Invalid input for ask_clarifying_question/
+    );
   });
 }
 
@@ -97,7 +107,11 @@ test("submit_recommendation rejects an empty product list", () => {
 
 for (const name of ["delete_records", "toString", "constructor", "__proto__", ""]) {
   test(`rejects unknown tool name ${JSON.stringify(name)}`, () => {
-    rejects(name, {}, /^Unknown tool: .*Available tools: search_tools, ask_clarifying_question, submit_recommendation\.$/);
+    rejects(
+      name,
+      {},
+      /^Unknown tool: .*Available tools: search_tools, ask_clarifying_question, submit_recommendation\.$/
+    );
   });
 }
 
@@ -121,7 +135,10 @@ for (const tool of AGENT_TOOLS) {
     const shape = schemasByName[tool.name].shape as Record<string, z.ZodTypeAny>;
     const required = Object.keys(shape).filter((key) => !shape[key].isOptional());
 
-    assert.deepEqual(Object.keys(tool.input_schema.properties ?? {}).sort(), Object.keys(shape).sort());
+    assert.deepEqual(
+      Object.keys(tool.input_schema.properties ?? {}).sort(),
+      Object.keys(shape).sort()
+    );
     assert.deepEqual([...((tool.input_schema.required as string[]) ?? [])].sort(), required.sort());
   });
 }
@@ -160,7 +177,10 @@ test("agent prompt states the tool rules", () => {
   assert.match(AGENT_SYSTEM_PROMPT, /Ask at most one clarifying question per conversation/);
   assert.match(AGENT_SYSTEM_PROMPT, /two or more relevant products, submit at least two/);
   assert.match(AGENT_SYSTEM_PROMPT, /do not pad the list/);
-  assert.match(AGENT_SYSTEM_PROMPT, /exactly one call to either\s+ask_clarifying_question or submit_recommendation/);
+  assert.match(
+    AGENT_SYSTEM_PROMPT,
+    /exactly one call to either\s+ask_clarifying_question or submit_recommendation/
+  );
 });
 
 test("agent and recommender share the same safety rules", () => {

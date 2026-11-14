@@ -1,14 +1,7 @@
 import assert from "node:assert/strict";
 import test, { mock } from "node:test";
 import Anthropic from "@anthropic-ai/sdk";
-import {
-  harness,
-  reply,
-  ROBO,
-  STARTER,
-  submit,
-  toolUse,
-} from "./helpers.js";
+import { harness, ROBO, reply, STARTER, submit, toolUse } from "./helpers.js";
 
 /**
  * End-to-end through HTTP: the real route, request validation, and agent
@@ -19,7 +12,9 @@ process.env.SUPABASE_URL ??= "http://127.0.0.1:54321";
 process.env.SUPABASE_SERVICE_ROLE_KEY ??= "test-service-role-key";
 
 const { runAgent } = await import("../src/lib/agent.js");
-const { createRecommendRoute, INVALID_REQUEST_MESSAGE } = await import("../src/routes/recommend.js");
+const { createRecommendRoute, INVALID_REQUEST_MESSAGE } = await import(
+  "../src/routes/recommend.js"
+);
 type AgentDeps = import("../src/lib/agent.js").AgentDeps;
 
 mock.method(console, "log", () => {});
@@ -155,7 +150,10 @@ test("an invalid request returns 400 without calling the model or search", async
   const { deps, requests, queries } = harness([]);
 
   const { status, text } = await post(apiWith(deps), {
-    turns: [{ role: "user", content: "hi" }, { role: "assistant", content: "What?" }],
+    turns: [
+      { role: "user", content: "hi" },
+      { role: "assistant", content: "What?" },
+    ],
   });
 
   assert.equal(status, 400);

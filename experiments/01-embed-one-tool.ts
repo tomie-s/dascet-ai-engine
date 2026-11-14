@@ -18,10 +18,7 @@ if (error) {
   process.exit(1);
 }
 
-const lines: string[] = [
-  `Name: ${data.name}`,
-  `Tagline: ${data.tagline}`,
-];
+const lines: string[] = [`Name: ${data.name}`, `Tagline: ${data.tagline}`];
 
 if (data.description) lines.push(`Description: ${data.description}`);
 
@@ -51,16 +48,22 @@ lines.push(`Available in Canada: ${data.canadian_available ? "Yes" : "No"}`);
 
 const text = lines.join("\n");
 
-const embeddingResponse = await voyage.embed({
-  model: "voyage-3-lite",
-  input: text,
-  inputType: "document",
-}).catch((err: unknown) => {
-  console.error("Voyage AI embedding failed:", err instanceof Error ? err.message : err);
-  process.exit(1);
-});
+const embeddingResponse = await voyage
+  .embed({
+    model: "voyage-3-lite",
+    input: text,
+    inputType: "document",
+  })
+  .catch((err: unknown) => {
+    console.error("Voyage AI embedding failed:", err instanceof Error ? err.message : err);
+    process.exit(1);
+  });
 
-const vector = embeddingResponse.data![0].embedding!;
+const vector = embeddingResponse.data?.[0]?.embedding;
+if (!vector || vector.length === 0) {
+  console.error("Voyage AI returned no embedding.");
+  process.exit(1);
+}
 
 console.log("Tool name:", data.name);
 console.log("\n--- Text sent for embedding ---\n");
@@ -69,6 +72,9 @@ console.log("\n--- Embedding results ---");
 console.log("Vector length:", vector.length);
 console.log(
   "First 10 values:",
-  vector.slice(0, 10).map((v) => v.toFixed(6)).join(", ")
+  vector
+    .slice(0, 10)
+    .map((v) => v.toFixed(6))
+    .join(", ")
 );
 console.log("\nSuccess: embedding generated for", data.name);

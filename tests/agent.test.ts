@@ -4,8 +4,8 @@ import {
   harness,
   lastToolResult,
   product,
-  reply,
   ROBO,
+  reply,
   STARTER,
   submit,
   thinking,
@@ -69,7 +69,9 @@ test("a vague request returns the model's clarifying question", async () => {
 });
 
 test("a clarification without choices omits the choices field", async () => {
-  const { deps } = harness([reply([toolUse("ask_clarifying_question", { question: "What is your goal?" })])]);
+  const { deps } = harness([
+    reply([toolUse("ask_clarifying_question", { question: "What is your goal?" })]),
+  ]);
 
   assert.deepEqual(await runAgent([userTurn("hi")], deps), {
     type: "clarification",

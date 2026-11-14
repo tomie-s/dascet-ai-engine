@@ -2,8 +2,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   buildRecommendationPrompt,
-  RECOMMENDATION_SYSTEM_PROMPT,
   type PromptTool,
+  RECOMMENDATION_SYSTEM_PROMPT,
 } from "../src/lib/prompt.js";
 
 const candidates: PromptTool[] = [

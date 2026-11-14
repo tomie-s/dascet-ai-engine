@@ -135,7 +135,10 @@ export const AGENT_TOOLS: Anthropic.Tool[] = [
             type: "object",
             properties: {
               id: { type: "string", description: "Product ID copied exactly from search results." },
-              name: { type: "string", description: "Product name copied exactly from search results." },
+              name: {
+                type: "string",
+                description: "Product name copied exactly from search results.",
+              },
               why: {
                 type: "string",
                 description:
