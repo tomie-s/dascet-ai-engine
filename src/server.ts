@@ -1,10 +1,25 @@
 import "dotenv/config";
 import { serve } from "@hono/node-server";
-import { app } from "./app.js";
+import { type Config, ConfigError, loadConfig } from "./config.js";
 
-const configuredPort = Number.parseInt(process.env.PORT ?? "3000", 10);
-const port = Number.isNaN(configuredPort) ? 3000 : configuredPort;
+function loadConfigOrExit(): Config {
+  try {
+    return loadConfig();
+  } catch (error) {
+    if (error instanceof ConfigError) {
+      console.error(error.message);
+      process.exit(1);
+    }
+    throw error;
+  }
+}
 
-serve({ fetch: app.fetch, port }, (info) => {
+const config = loadConfigOrExit();
+
+// Imported after validation so a misconfigured server fails with the full list
+// of problems above rather than the first module-level throw.
+const { app } = await import("./app.js");
+
+serve({ fetch: app.fetch, port: config.port }, (info) => {
   console.log(`Dascet AI Engine listening on http://localhost:${info.port}`);
 });

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const recommendationSchema = z.object({
+export const recommendationSchema = z.object({
   tools: z
     .array(
       z.object({
@@ -28,7 +28,14 @@ export function parseModelResponse(
     .replace(/^```json\s*/i, "")
     .replace(/```\s*$/i, "")
     .trim();
-  const recommendation = recommendationSchema.parse(JSON.parse(cleaned));
+  return validateRecommendation(recommendationSchema.parse(JSON.parse(cleaned)), candidates);
+}
+
+/** Rejects products outside the candidate list, renamed products, and duplicates. */
+export function validateRecommendation(
+  recommendation: Recommendation,
+  candidates: RecommendationCandidate[]
+): Recommendation {
   const candidatesById = new Map(candidates.map((tool) => [tool.id, tool]));
 
   for (const result of recommendation.tools) {

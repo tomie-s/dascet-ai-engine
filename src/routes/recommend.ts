@@ -1,35 +1,39 @@
 import { Hono } from "hono";
 import { z } from "zod";
-import { NoMatchesError, recommend } from "../lib/recommender.js";
+import { runAgent, turnsSchema, type AgentResult, type Turn } from "../lib/agent.js";
 
-const requestSchema = z.object({
-  message: z.string().trim().min(1).max(2_000),
-});
+const requestSchema = z.object({ turns: turnsSchema });
 
-export const recommendRoute = new Hono();
+export const INVALID_REQUEST_MESSAGE =
+  "Request body must contain 1 to 3 turns that alternate between user and assistant, " +
+  "start and end with the user, and keep user messages between 1 and 2,000 characters.";
 
-recommendRoute.post("/", async (context) => {
-  const body: unknown = await context.req.json().catch(() => null);
-  const parsed = requestSchema.safeParse(body);
+export type RunAgentFn = (turns: Turn[]) => Promise<AgentResult>;
 
-  if (!parsed.success) {
-    return context.json(
-      { error: "Request body must contain a message between 1 and 2,000 characters." },
-      400
-    );
-  }
+/** The agent is injectable so tests can exercise every response path without paid calls. */
+export function createRecommendRoute(runAgentFn: RunAgentFn = (turns) => runAgent(turns)) {
+  const route = new Hono();
 
-  try {
-    return context.json(await recommend(parsed.data.message));
-  } catch (error) {
-    if (error instanceof NoMatchesError) {
-      return context.json(
-        { error: "No relevant products were found. Try adding more detail." },
-        404
-      );
+  route.post("/", async (context) => {
+    const body: unknown = await context.req.json().catch(() => null);
+    const parsed = requestSchema.safeParse(body);
+
+    if (!parsed.success) {
+      return context.json({ error: INVALID_REQUEST_MESSAGE }, 400);
     }
 
-    console.error("Recommendation request failed", error);
-    return context.json({ error: "The recommendation could not be generated." }, 502);
-  }
-});
+    try {
+      return context.json(await runAgentFn(parsed.data.turns));
+    } catch (error) {
+      // Log only the name and message: provider SDK errors can carry request details.
+      const { name, message } =
+        error instanceof Error ? error : { name: "UnknownError", message: String(error) };
+      console.error("Recommendation request failed", { name, message });
+      return context.json({ error: "The recommendation could not be generated." }, 502);
+    }
+  });
+
+  return route;
+}
+
+export const recommendRoute = createRecommendRoute();

@@ -1,6 +1,10 @@
 import Anthropic from "@anthropic-ai/sdk";
 import { VoyageAIClient } from "voyageai";
-import { buildRecommendationPrompt, RECOMMENDATION_SYSTEM_PROMPT } from "./prompt.js";
+import {
+  buildRecommendationPrompt,
+  RECOMMENDATION_SYSTEM_PROMPT,
+  type PromptTool,
+} from "./prompt.js";
 import { parseModelResponse } from "./recommendation-response.js";
 import { supabase } from "./supabase.js";
 
@@ -9,18 +13,6 @@ export type { Recommendation } from "./recommendation-response.js";
 const MATCH_THRESHOLD = 0.45;
 const MATCH_COUNT = 5;
 
-type FinancialTool = {
-  id: string;
-  name: string;
-  tagline: string;
-  description: string | null;
-  target_situations: string[] | null;
-  key_features: string[] | null;
-  experience_level: string | null;
-  pricing_plain: string | null;
-  canadian_available: boolean;
-};
-
 export class NoMatchesError extends Error {
   constructor() {
     super("No matching products were found");
@@ -28,19 +20,17 @@ export class NoMatchesError extends Error {
   }
 }
 
-export async function recommend(
-  message: string
-): Promise<import("./recommendation-response.js").Recommendation> {
+/**
+ * Retrieves up to five catalogue products for a plain-language query, in
+ * similarity order. When any match is available in Canada, only Canadian
+ * products are returned. Returns an empty array when nothing matches.
+ */
+export async function searchTools(query: string): Promise<PromptTool[]> {
   const voyageApiKey = process.env.VOYAGE_API_KEY;
-  const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
-
-  if (!voyageApiKey || !anthropicApiKey) {
-    throw new Error("The AI provider API keys are not configured");
-  }
+  if (!voyageApiKey) throw new Error("The Voyage AI API key is not configured");
 
   const voyage = new VoyageAIClient({ apiKey: voyageApiKey });
-  const anthropic = new Anthropic({ apiKey: anthropicApiKey });
-  const retrievalQuery = `Canadian financial product discovery request: ${message}`;
+  const retrievalQuery = `Canadian financial product discovery request: ${query}`;
   const embeddingResponse = await voyage.embed({
     model: "voyage-3-lite",
     input: [retrievalQuery],
@@ -66,7 +56,7 @@ export async function recommend(
   const matchedIds: string[] = (matches ?? []).map(
     (row: { id: string }) => row.id
   );
-  if (matchedIds.length === 0) throw new NoMatchesError();
+  if (matchedIds.length === 0) return [];
 
   const { data, error: selectError } = await supabase
     .from("financial_tools")
@@ -79,16 +69,30 @@ export async function recommend(
     throw new Error(`Product lookup failed: ${selectError.message}`);
   }
 
-  const fetchedTools = (data ?? []) as FinancialTool[];
+  const fetchedTools = (data ?? []) as PromptTool[];
   const tools = matchedIds
     .map((id) => fetchedTools.find((tool) => tool.id === id))
-    .filter((tool): tool is FinancialTool => tool !== undefined);
-
-  if (tools.length === 0) throw new NoMatchesError();
+    .filter((tool): tool is PromptTool => tool !== undefined);
 
   const canadianTools = tools.filter((tool) => tool.canadian_available);
-  const promptTools = canadianTools.length > 0 ? canadianTools : tools;
+  return canadianTools.length > 0 ? canadianTools : tools;
+}
 
+/** Single-shot recommender: the Phase 3 baseline the agent is compared against in Phase 6. */
+export async function recommend(
+  message: string
+): Promise<import("./recommendation-response.js").Recommendation> {
+  const voyageApiKey = process.env.VOYAGE_API_KEY;
+  const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
+
+  if (!voyageApiKey || !anthropicApiKey) {
+    throw new Error("The AI provider API keys are not configured");
+  }
+
+  const promptTools = await searchTools(message);
+  if (promptTools.length === 0) throw new NoMatchesError();
+
+  const anthropic = new Anthropic({ apiKey: anthropicApiKey });
   const response = await anthropic.messages.create({
     model: "claude-sonnet-4-6",
     max_tokens: 1024,

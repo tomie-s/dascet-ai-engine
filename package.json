@@ -7,8 +7,8 @@
   "scripts": {
     "experiment": "tsx",
     "test:phase1-2": "tsx scripts/test-phase1-2.ts",
-    "test:phase3": "tsx --test tests/*.test.ts",
-    "test:phase1-3": "npm run test:phase1-2 && npm run test:phase3",
+    "test": "tsx --test tests/*.test.ts",
+    "test:all": "npm run test:phase1-2 && npm test",
     "dev": "tsx watch src/server.ts",
     "start": "node dist/server.js",
     "build": "tsc",
