@@ -183,9 +183,81 @@ Errors are always JSON in the form `{"error": "<message>"}`:
 Each request logs one line of counts (model calls, searches, input, output,
 and cache tokens) and never the user's messages.
 
+## Deployment
+
+The API runs on [Railway](https://railway.com) as a Docker container built
+from the root `Dockerfile` (Node 26, production dependencies only, non-root
+user). Deploys are made from a local checkout with the Railway CLI.
+
+### Environment variables
+
+Set these in the Railway service's **Variables** tab. They are injected at
+runtime and are never part of the image.
+
+| Variable | Required | Notes |
+|---|---|---|
+| `SUPABASE_URL` | Yes | Supabase project holding the catalogue |
+| `SUPABASE_SERVICE_ROLE_KEY` | Yes | Server-side key; never expose to a client |
+| `VOYAGE_API_KEY` | Yes | Voyage AI embeddings |
+| `ANTHROPIC_API_KEY` | Yes | Use a key from a dedicated Anthropic Console workspace with a monthly spend limit |
+| `RAILWAY_DEPLOYMENT_DRAINING_SECONDS` | Yes, set to `10` | Seconds between `SIGTERM` and `SIGKILL` on redeploy. Railway's default is `0`, which skips graceful shutdown; `10` matches the server's shutdown timeout |
+| `PORT` | No | Set by Railway automatically; do not add it |
+
+### Service settings
+
+| Setting | Value | Why |
+|---|---|---|
+| Healthcheck path | `/health` | Railway waits for a `200` before switching traffic to a new deployment |
+| Restart policy | On failure, 10 retries | Recovers from crashes without restarting a deliberate exit |
+
+Draining time is set with the `RAILWAY_DEPLOYMENT_DRAINING_SECONDS`
+variable above ([deployment teardown](https://docs.railway.com/deployments/deployment-teardown)).
+
+### First deploy
+
+```bash
+npm install -g @railway/cli   # or: brew install railway
+railway login                 # opens the browser
+railway link                  # pick the project and service
+railway up                    # uploads this folder, builds the Dockerfile, deploys
+```
+
+Then run `railway domain` to generate the public `*.up.railway.app` domain
+(it creates one if none exists, otherwise prints the existing one).
+`railway up` respects `.gitignore`, so `.env` is never uploaded.
+
+### Smoke test
+
+```bash
+# Free checks: health, unknown route, request validation
+npm run smoke -- https://<your-domain> --skip-paid
+
+# Adds one real recommendation request (paid Voyage AI and Claude calls)
+npm run smoke -- https://<your-domain>
+```
+
+The same script works against a local server or container
+(`npm run smoke -- http://localhost:3000`). It prints statuses and response
+types only and exits `1` if any check fails.
+
+### Redeploy, logs, and rollback
+
+- **Redeploy:** run `railway up` again. The old deployment receives `SIGTERM`
+  and drains before it stops.
+- **Logs:** `railway logs`, or the deployment's **Logs** tab in the dashboard.
+- **Rollback:** in the service's **Deployments** list, open a previous
+  successful deployment's menu and choose **Rollback**. Then run the smoke test.
+
+### Rotating the Anthropic API key
+
+Console keys have an expiry date. Before it passes: create a new key in the
+same Anthropic workspace, replace `ANTHROPIC_API_KEY` in Railway's
+**Variables** (Railway redeploys automatically), run the smoke test, then
+delete the old key.
+
 ## Build Status
 
-✅ **Phase 4 complete** — Agentic Workflows: a bounded tool-use agent that clarifies or recommends
+✅ **Phase 5 complete** — Deployment & MLOps: a Docker container on Railway with health checks, graceful shutdown, and a repeatable smoke test
 
 ---
 

@@ -20,6 +20,19 @@ const config = loadConfigOrExit();
 // of problems above rather than the first module-level throw.
 const { app } = await import("./app.js");
 
-serve({ fetch: app.fetch, port: config.port }, (info) => {
-  console.log(`Dascet AI Engine listening on http://localhost:${info.port}`);
+const server = serve({ fetch: app.fetch, port: config.port }, (info) => {
+  console.log(`Dascet AI Engine listening on port ${info.port}`);
 });
+
+const SHUTDOWN_TIMEOUT_MS = 10_000;
+
+// Railway sends SIGTERM on every redeploy: stop accepting connections and let
+// in-flight requests finish, but never hang past the timeout.
+function shutdown(signal: NodeJS.Signals) {
+  console.log(`${signal} received, closing server`);
+  server.close((error) => process.exit(error ? 1 : 0));
+  setTimeout(() => process.exit(1), SHUTDOWN_TIMEOUT_MS).unref();
+}
+
+process.once("SIGTERM", shutdown);
+process.once("SIGINT", shutdown);
