@@ -302,3 +302,38 @@ test("the run log contains counts only, never user content", async () => {
   });
   assert.ok(!JSON.stringify(logMock.mock.calls).includes(secretMessage));
 });
+
+// --- evaluation usage ---
+
+test("usage is omitted from the result unless requested", async () => {
+  const { deps } = harness([
+    reply([toolUse("search_tools", { query: "investing" })]),
+    reply([submit([STARTER])]),
+  ]);
+
+  const result = await runAgent([userTurn("I want to start investing")], deps);
+
+  assert.equal("usage" in result, false);
+});
+
+test("includeUsage adds the model and the run's counts to the result", async () => {
+  const { deps } = harness([
+    reply([toolUse("search_tools", { query: "investing" })]),
+    reply([submit([STARTER])]),
+  ]);
+
+  const result = await runAgent([userTurn("I want to start investing")], deps, {
+    includeUsage: true,
+  });
+
+  assert.deepEqual(result.usage, {
+    model: AGENT_MODEL,
+    outcome: "recommendation",
+    searches: 1,
+    calls: 2,
+    inputTokens: 200,
+    outputTokens: 40,
+    cacheReadTokens: 100,
+    cacheWriteTokens: 0,
+  });
+});

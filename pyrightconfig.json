@@ -1,0 +1,7 @@
+{
+  "include": ["evals"],
+  "exclude": ["evals/.venv"],
+  "venvPath": "evals",
+  "venv": ".venv",
+  "extraPaths": ["evals"]
+}

@@ -1,14 +1,14 @@
 # Dascet AI Engine
 
-An AI-powered tool recommendation engine for [Dascet](https://dascet.com) — a Canadian fintech platform helping young Canadians navigate financial products.
+An AI-powered product recommendation engine for [Dascet](https://dascet.com) — a Canadian fintech platform helping young Canadians navigate financial products.
 
 ## What This Is
 
-Dascet has 200+ curated financial tools in its database. This engine lets a user describe their financial situation in plain language and returns the most relevant tools — not by keyword matching, but by semantic understanding.
+Dascet has 200+ curated financial products in its database. This engine lets a user describe their financial situation in plain language and returns the most relevant products — not by keyword matching, but by semantic understanding.
 
-It uses embeddings, vector search, and an LLM reasoning layer to bridge the gap between "I have credit card debt and no savings" and the right set of tools to explore.
+It uses embeddings, vector search, and an LLM reasoning layer to bridge the gap between "I have credit card debt and no savings" and the right set of products to explore.
 
-The project uses its own self-contained Supabase database containing a July 2026 snapshot of the financial-tools catalogue.
+The project uses its own self-contained Supabase database containing a July 2026 snapshot of the financial products catalogue.
 
 ## What I'm Learning
 
@@ -29,20 +29,23 @@ This project is a hands-on learning exercise covering:
 | Language | TypeScript |
 | API | Hono |
 | Embeddings | Voyage AI `voyage-3-lite` |
-| LLM | Anthropic Claude |
+| LLM | Anthropic Claude Haiku 5.5 (agent) |
 | Vector Store | Supabase + pgvector |
 | Validation | Zod |
 | Deployment | Railway |
+| Evaluation | Python 3.12+ with pytest and httpx (`evals/`) |
 
 ## Project Structure
 
 ```
+evals/                # Python evaluation harness, eval set, and results (see EVALUATION.md)
 experiments/          # Phase 1–3 learning scripts (not production code)
+scripts/              # Smoke test and the Phase 1–2 database checks
 src/
-├── lib/              # Shared utilities (embeddings, Supabase, prompts)
+├── lib/              # Agent loop, tools, prompts, retrieval, and the Supabase client
 ├── routes/           # Hono API route handlers
 └── server.ts         # API entry point
-supabase/migrations/ # Standalone learning-database migrations
+supabase/migrations/  # Standalone learning-database migrations
 ```
 
 ## Getting Started
@@ -54,8 +57,8 @@ npm install
 # Copy env file and fill in your keys
 cp .env.example .env
 
-# Create the standalone catalogue schema by running this migration in Supabase
-# supabase/migrations/202607220001_create_financial_tools.sql
+# Create the standalone catalogue by running the migrations in
+# supabase/migrations/ in order, in the Supabase SQL editor
 
 # Run an experiment script
 npm run experiment experiments/01-embed-one-tool.ts
@@ -79,8 +82,9 @@ curl -X POST http://localhost:3000/recommend \
   -d '{"turns":[{"role":"user","content":"I am new to investing and want to start small"}]}'
 ```
 
-The regression suite checks catalogue integrity, embedding coverage and
-dimensions, and pgvector retrieval without making paid embedding or LLM calls.
+The Phase 1–2 database checks verify catalogue integrity, embedding coverage
+and dimensions, and pgvector retrieval without making paid embedding or LLM
+calls.
 
 Code quality uses Biome:
 
@@ -113,7 +117,7 @@ clarifying question, or recommend, using exactly three tools:
 
 | Tool | What it does |
 |---|---|
-| `search_tools` | Vector search over the catalogue (up to five products, Canadian-available first) |
+| `search_tools` | Vector search over the catalogue (up to five products; only Canadian-available ones when any match) |
 | `ask_clarifying_question` | Asks the user one short question, with optional choices. Ends the run |
 | `submit_recommendation` | Returns products found by this run's searches. Ends the run |
 
@@ -183,6 +187,10 @@ Errors are always JSON in the form `{"error": "<message>"}`:
 Each request logs one line of counts (model calls, searches, input, output,
 and cache tokens) and never the user's messages.
 
+When the server is started with `EVAL_INCLUDE_USAGE=1` (local evaluation
+only), each response from a finished run also includes a `usage` object with
+the model and the same counts. Production never sets it.
+
 ## Deployment
 
 The API runs on [Railway](https://railway.com) as a Docker container built
@@ -202,6 +210,8 @@ runtime and are never part of the image.
 | `ANTHROPIC_API_KEY` | Yes | Use a key from a dedicated Anthropic Console workspace with a monthly spend limit |
 | `RAILWAY_DEPLOYMENT_DRAINING_SECONDS` | Yes, set to `10` | Seconds between `SIGTERM` and `SIGKILL` on redeploy. Railway's default is `0`, which skips graceful shutdown; `10` matches the server's shutdown timeout |
 | `PORT` | No | Set by Railway automatically; do not add it |
+| `AGENT_MODEL` | No | Local evaluation only; overrides the agent model (default `claude-haiku-5-5`). Do not add it |
+| `EVAL_INCLUDE_USAGE` | No | Local evaluation only; `1` adds token counts to `/recommend` responses. Do not add it |
 
 ### Service settings
 
@@ -209,6 +219,7 @@ runtime and are never part of the image.
 |---|---|---|
 | Healthcheck path | `/health` | Railway waits for a `200` before switching traffic to a new deployment |
 | Restart policy | On failure, 10 retries | Recovers from crashes without restarting a deliberate exit |
+| Serverless (app sleeping) | On | Saves credit while idle. The first request after a quiet period takes about 2 seconds longer (measured 2026-11-15), well within the smoke test's 10-second timeout |
 
 Draining time is set with the `RAILWAY_DEPLOYMENT_DRAINING_SECONDS`
 variable above ([deployment teardown](https://docs.railway.com/deployments/deployment-teardown)).
@@ -255,9 +266,30 @@ same Anthropic workspace, replace `ANTHROPIC_API_KEY` in Railway's
 **Variables** (Railway redeploys automatically), run the smoke test, then
 delete the old key.
 
+## Evaluation
+
+Retrieval and recommendation quality are measured separately against 36 hand-written requests (`evals/cases.jsonl`), with deterministic checks as the main signal and no LLM judge. End-to-end figures are the mean of three runs:
+
+| Measure | Before Phase 6 tuning | After |
+|---|---|---|
+| Responses that follow the wording rules | 0.65 | 0.95 |
+| Retrieval: an expected product in the top 5 (user's own words) | 0.79 | 0.89 |
+| End to end: an expected product returned | 0.95 | 0.95 |
+| Grounded in the catalogue, valid schema, safety checks | 1.0 | 1.0 |
+
+A full 36-request run costs about US$0.03 on Claude Haiku 5.5. Claude Sonnet 5.5 scored about the same at about 16 times the cost per request, so the agent stays on Haiku. The method, every experiment, the failure analysis, and the known limitations are in [EVALUATION.md](EVALUATION.md).
+
+Before changing prompts, tool descriptions, retrieval settings, or catalogue text, run the regression check. It exits with an error and names the cases that got worse when a score drops below the accepted reference:
+
+```bash
+npm run eval:setup            # once
+npm run eval:check            # free: retrieval and harness checks
+npm run eval:check -- --paid  # also one end-to-end run against `npm run dev` (paid, about US$0.03)
+```
+
 ## Build Status
 
-✅ **Phase 5 complete** — Deployment & MLOps: a Docker container on Railway with health checks, graceful shutdown, and a repeatable smoke test
+✅ **Phase 6 complete** — Evaluation & Optimization: a Python evaluation harness and measured baseline, prompt and catalogue tuning against it, and a one-command regression check
 
 ---
 

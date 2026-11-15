@@ -91,6 +91,9 @@ Decision rules:
 Tool rules:
 - Always call search_tools before submit_recommendation.
 - Write search queries that describe the user's financial need in plain words.
+- If the user names a bank or provider they already use, include that name in the
+  search query. When the results include that provider's product for the need,
+  submit it alongside the other relevant products.
 - Only submit products returned by search_tools in this conversation, copying
   each product ID and name exactly.
 - When a search returns two or more relevant products, submit at least two.
