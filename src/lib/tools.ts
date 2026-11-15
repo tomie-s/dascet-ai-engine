@@ -2,8 +2,11 @@ import type Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
 import { recommendationSchema } from "./recommendation-response.js";
 
-/** Cheapest current model. Phase 6 evaluation decides whether it is good enough. */
-export const AGENT_MODEL = "claude-haiku-5-5";
+/**
+ * Cheapest current model. The AGENT_MODEL environment variable overrides it for
+ * evaluation runs (for example, comparing a Sonnet model); production leaves it unset.
+ */
+export const AGENT_MODEL = process.env.AGENT_MODEL?.trim() || "claude-haiku-5-5";
 
 /**
  * Hard per-request bounds. They cap the worst-case cost of a single request
@@ -142,7 +145,9 @@ export const AGENT_TOOLS: Anthropic.Tool[] = [
               why: {
                 type: "string",
                 description:
-                  "One or two sentences explaining what this product does and why it may be relevant.",
+                  "One or two sentences explaining what this product does and how it relates to " +
+                  "the user's request, in neutral words. Never call a product or action best, " +
+                  "great, ideal, perfect, a fit, or worth exploring.",
               },
             },
             required: ["id", "name", "why"],
@@ -152,8 +157,13 @@ export const AGENT_TOOLS: Anthropic.Tool[] = [
         explanation: {
           type: "string",
           description:
-            "Two or three sentences acknowledging the user's situation and framing these " +
-            "products as options to explore, not a ranked list or financial advice.",
+            "Two or three sentences acknowledging the user's situation and saying the user can " +
+            "compare these products and decide, without ranking them or giving financial advice. " +
+            "The app may show the products in any order or position, so refer to them as " +
+            '"these products" or by name, never by position ("below", "above", "following", ' +
+            '"first"). Never call a product or action best, great, ideal, perfect, a fit, or ' +
+            "worth exploring. Do not praise the user or their plan (for example, \"it's great " +
+            'that…").',
         },
       },
       required: ["tools", "explanation"],

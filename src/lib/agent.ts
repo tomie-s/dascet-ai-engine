@@ -49,9 +49,24 @@ export type Turn = z.infer<typeof turnsSchema>[number];
 
 export type Clarification = { question: string; choices?: string[] };
 
-export type AgentResult =
+/** Per-run counts. Returned to clients only when the route enables it for evaluation. */
+export type AgentUsage = {
+  model: string;
+  outcome: string;
+  searches: number;
+  calls: number;
+  inputTokens: number;
+  outputTokens: number;
+  cacheReadTokens: number;
+  cacheWriteTokens: number;
+};
+
+export type AgentResult = (
   | ({ type: "recommendation" } & Recommendation)
-  | ({ type: "clarification" } & Clarification);
+  | ({ type: "clarification" } & Clarification)
+) & { usage?: AgentUsage };
+
+export type AgentOptions = { includeUsage?: boolean };
 
 export type AgentDeps = {
   createMessage: (params: Anthropic.MessageCreateParamsNonStreaming) => Promise<Anthropic.Message>;
@@ -98,7 +113,8 @@ type StepOutcome = { done: AgentResult } | { toolResult: string; isError: boolea
  */
 export async function runAgent(
   turns: Turn[],
-  deps: AgentDeps = defaultDeps()
+  deps: AgentDeps = defaultDeps(),
+  options: AgentOptions = {}
 ): Promise<AgentResult> {
   const messages: Anthropic.MessageParam[] = turns.map((turn) => ({
     role: turn.role,
@@ -115,6 +131,11 @@ export async function runAgent(
     cacheWriteTokens: 0,
   };
   let outcome = "fallback";
+
+  function finish(result: AgentResult): AgentResult {
+    if (!options.includeUsage) return result;
+    return { ...result, usage: { model: AGENT_MODEL, outcome, searches, ...usage } };
+  }
 
   function error(message: string): StepOutcome {
     return { toolResult: message, isError: true };
@@ -207,7 +228,7 @@ export async function runAgent(
       const step = await handleToolCall(toolUse);
       if ("done" in step) {
         outcome = step.done.type;
-        return step.done;
+        return finish(step.done);
       }
 
       messages.push({
@@ -227,6 +248,6 @@ export async function runAgent(
     console.log("Agent run", { outcome, searches, ...usage });
   }
 
-  if (!alreadyClarified) return { type: "clarification", ...FALLBACK_CLARIFICATION };
+  if (!alreadyClarified) return finish({ type: "clarification", ...FALLBACK_CLARIFICATION });
   throw new AgentError("The agent did not reach a final answer");
 }

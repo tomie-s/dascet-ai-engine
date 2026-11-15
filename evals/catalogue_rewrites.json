@@ -1,0 +1,63 @@
+[
+  {
+    "product_id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+    "name": "Credit Counselling Society",
+    "field": "tagline",
+    "before": "Non-profit Canadian credit counselling service for debt help and money management.",
+    "after": "Non-profit Canadian credit counselling for paying down debt, with a Debt Management Program that consolidates unsecured debts and can reduce interest.",
+    "targets": ["debt-02", "mt-01", "debt-04"],
+    "reason": "The row describes a Debt Management Program that consolidates unsecured debts and negotiates to reduce or eliminate interest; the old tagline did not mention paying down or consolidating debt.",
+    "status": "applied",
+    "applied": "2026-11-15, supabase/migrations/202611150001_rewrite_catalogue_taglines.sql"
+  },
+  {
+    "product_id": "8e4d58b0-5055-4f00-8318-ad8708adf767",
+    "name": "YNAB (You Need A Budget)",
+    "field": "tagline",
+    "before": "Budgeting software built around a proven method that helps you gain control of your money.",
+    "after": "Zero-based budgeting app for planning spending, tracking savings goals, and paying off debt.",
+    "targets": ["debt-04", "mt-01"],
+    "reason": "Key features include zero-based budgeting and debt payoff and savings goal tracking; the old tagline ('a proven method') named neither.",
+    "status": "rejected",
+    "result": "debt-04 unchanged; bud-04 first ideal product dropped from rank 1 to 4."
+  },
+  {
+    "product_id": "4d85c06c-f5d5-4053-82b4-8be9fd332f9a",
+    "name": "EQ Bank",
+    "field": "tagline",
+    "before": "High-interest savings and everyday banking with no monthly fees.",
+    "after": "High-interest savings with no monthly fees, plus TFSAs, GICs, and First Home Savings Accounts (FHSAs) for saving toward a first home.",
+    "targets": ["sav-02"],
+    "reason": "The description lists TFSAs, RRSPs, FHSAs, and GICs; the old tagline named only savings and everyday banking.",
+    "status": "rejected",
+    "tried": [
+      {
+        "after": "High-interest savings, TFSAs, First Home Savings Accounts (FHSAs), and GICs with no monthly fees.",
+        "result": "No case changed; sav-02 still returned only mortgage products."
+      }
+    ],
+    "result": "sav-02 unchanged with both wordings; the second wording only moved EQ Bank up in mix-01, which it did not target."
+  },
+  {
+    "product_id": "de0c8047-73c1-48ee-8315-da1fcd1fdd3a",
+    "name": "Oaken Financial",
+    "field": "tagline",
+    "before": "Competitive savings accounts and GICs for Canadian savers.",
+    "after": "High-interest savings accounts and GICs, including TFSA and RRSP GICs, for money set aside for a fixed period.",
+    "targets": ["sav-02"],
+    "reason": "The description offers TFSA and RRSP GICs for money not needed for a defined period; the old tagline used 'Competitive', which SAFETY_RULES bans for rates.",
+    "status": "rejected",
+    "result": "sav-02 unchanged; only effect was moving Oaken out of sav-03."
+  },
+  {
+    "product_id": "eca1cdc1-2ec5-4670-910f-6095e5946f0d",
+    "name": "BMO Savings Builder Account",
+    "field": "tagline",
+    "before": "BMO savings account designed to reward ongoing savings habits inside BMO banking.",
+    "after": "BMO savings account that pays bonus interest for regular monthly deposits, to help build a steady savings habit.",
+    "targets": ["sav-03"],
+    "reason": "The description says bonus interest is earned by depositing every month and growing the balance; the old tagline did not say how the savings habit works.",
+    "status": "applied",
+    "applied": "2026-11-15, supabase/migrations/202611150001_rewrite_catalogue_taglines.sql"
+  }
+]

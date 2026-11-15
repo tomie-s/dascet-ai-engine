@@ -12,6 +12,11 @@ dist/
 # Supabase CLI cache
 supabase/.temp/
 
+# Python evaluation harness
+evals/.venv/
+__pycache__/
+evals/results/latest.json
+
 # TypeScript cache
 *.tsbuildinfo
 

@@ -1,0 +1,163 @@
+{
+  "reference_runs": [
+    "evals/results/runs/t4-run1.json",
+    "evals/results/runs/t4-run2.json",
+    "evals/results/runs/t4-run3.json"
+  ],
+  "tolerance": {
+    "cases_below_worst_reference": 1,
+    "category_precision_below_worst_reference": 0.02
+  },
+  "retrieval": {
+    "bud-01": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "bud-02": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "bud-03": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "bud-04": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "cred-01": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "debt-01": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "debt-02": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "debt-03": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "debt-04": {
+      "hit": false,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "debt-05": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "edge-03": {
+      "hit": null,
+      "no_match_ok": true,
+      "forbidden": []
+    },
+    "edge-04": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "edge-05": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "edge-06": {
+      "hit": false,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "edge-08": {
+      "hit": null,
+      "no_match_ok": true,
+      "forbidden": []
+    },
+    "inv-01": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "inv-02": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "inv-03": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "inv-04": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "inv-05": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "mix-01": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "mix-02": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "mix-03": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "mix-04": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "mt-01": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "mt-02": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "sav-01": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "sav-02": {
+      "hit": false,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "sav-03": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    },
+    "sav-04": {
+      "hit": true,
+      "no_match_ok": null,
+      "forbidden": []
+    }
+  }
+}

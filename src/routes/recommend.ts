@@ -10,8 +10,15 @@ export const INVALID_REQUEST_MESSAGE =
 
 export type RunAgentFn = (turns: Turn[]) => Promise<AgentResult>;
 
-/** The agent is injectable so tests can exercise every response path without paid calls. */
-export function createRecommendRoute(runAgentFn: RunAgentFn = (turns) => runAgent(turns)) {
+/**
+ * The agent is injectable so tests can exercise every response path without paid calls.
+ * EVAL_INCLUDE_USAGE=1 adds per-run token counts to each response for local evaluation
+ * runs; production leaves it unset.
+ */
+export function createRecommendRoute(
+  runAgentFn: RunAgentFn = (turns) =>
+    runAgent(turns, undefined, { includeUsage: process.env.EVAL_INCLUDE_USAGE === "1" })
+) {
   const route = new Hono();
 
   route.post("/", async (context) => {

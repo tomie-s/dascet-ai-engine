@@ -1,0 +1,2894 @@
+{
+  "metadata": {
+    "date": "2026-11-15T19:53:45+00:00",
+    "commit": "361f7c4-dirty",
+    "agent_model": "claude-haiku-5-5",
+    "agent_model_source": "API usage",
+    "voyage_model": "voyage-3-lite",
+    "query_prefix": "Canadian financial product discovery request: ",
+    "match_threshold": 0.45,
+    "match_count": 5,
+    "paid": true,
+    "base_url": "http://localhost:3000"
+  },
+  "retrieval": {
+    "cases": 28,
+    "hit_at_5": 0.786,
+    "recall_at_5": 0.405,
+    "mrr": 0.643,
+    "category_precision_at_5": 0.854,
+    "empty_rate": 0.071,
+    "forbidden_cases": 0,
+    "no_match_passed": "2/2"
+  },
+  "e2e": {
+    "cases": 35,
+    "outcome_accuracy": 1.0,
+    "schema_valid_rate": 1.0,
+    "grounded_rate": 1.0,
+    "hit_rate": 0.929,
+    "category_precision": 0.988,
+    "coverage_rate": 1.0,
+    "wording_clean_rate": 0.971,
+    "safety_pass_rate": 1.0
+  },
+  "cost": {
+    "requests": 36,
+    "models": [
+      "claude-haiku-5-5"
+    ],
+    "calls": 73,
+    "inputTokens": 120602,
+    "outputTokens": 29754,
+    "cacheReadTokens": 179434,
+    "cacheWriteTokens": 0,
+    "usd": 0.0287,
+    "usd_per_request": 0.0008
+  },
+  "by_intent": {
+    "advice": {
+      "cases": 1,
+      "retrieval_hit_at_5": null,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": null
+    },
+    "ambiguous": {
+      "cases": 3,
+      "retrieval_hit_at_5": null,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": null
+    },
+    "budgeting": {
+      "cases": 4,
+      "retrieval_hit_at_5": 1.0,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 1.0
+    },
+    "credit": {
+      "cases": 2,
+      "retrieval_hit_at_5": 1.0,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 1.0
+    },
+    "debt": {
+      "cases": 5,
+      "retrieval_hit_at_5": 0.4,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 1.0
+    },
+    "french": {
+      "cases": 1,
+      "retrieval_hit_at_5": 0.0,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 1.0
+    },
+    "injection": {
+      "cases": 1,
+      "retrieval_hit_at_5": null,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": null
+    },
+    "insurance": {
+      "cases": 1,
+      "retrieval_hit_at_5": 1.0,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 1.0
+    },
+    "investing": {
+      "cases": 6,
+      "retrieval_hit_at_5": 1.0,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 0.833
+    },
+    "mixed": {
+      "cases": 4,
+      "retrieval_hit_at_5": 1.0,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 1.0
+    },
+    "off_topic": {
+      "cases": 2,
+      "retrieval_hit_at_5": null,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": null
+    },
+    "retirement": {
+      "cases": 1,
+      "retrieval_hit_at_5": 1.0,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 1.0
+    },
+    "saving": {
+      "cases": 4,
+      "retrieval_hit_at_5": 0.5,
+      "e2e_outcome_accuracy": 1.0,
+      "e2e_hit_rate": 0.75
+    }
+  },
+  "failures": [
+    "retrieval sav-02: no ideal product, got ['Fraction', 'CMHC Mortgage Calculator', 'RBC Mortgage', 'BMO Mortgage', 'Pine Mortgage']",
+    "retrieval sav-03: no ideal product, got ['Motive Financial Savvy Savings Account', 'Moka', 'Scotiabank MomentumPLUS Savings Account', 'Oaken Financial']",
+    "retrieval debt-02: no ideal product, got []",
+    "retrieval debt-04: no ideal product, got ['Loans Canada', 'TD Personal Loan']",
+    "retrieval mt-01: no ideal product, got []",
+    "retrieval edge-06: no ideal product, got ['TD Insurance', 'Desjardins Insurance', 'BuyProperly', 'Interactive Brokers Canada', 'Desjardins Online Brokerage']",
+    "e2e inv-04: no ideal product",
+    "e2e sav-02: no ideal product",
+    "e2e debt-03: wording ['fit']"
+  ],
+  "cases": {
+    "retrieval": {
+      "inv-01": {
+        "returned": [
+          {
+            "name": "Intelligent Investing",
+            "similarity": 0.5662
+          },
+          {
+            "name": "BuyProperly",
+            "similarity": 0.542
+          },
+          {
+            "name": "RBC InvestEase",
+            "similarity": 0.5395
+          },
+          {
+            "name": "BMO InvestorLine Self-Directed",
+            "similarity": 0.5348
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.2,
+        "mrr": 0.3333333333333333,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-02": {
+        "returned": [
+          {
+            "name": "Questrade",
+            "similarity": 0.5923
+          },
+          {
+            "name": "Interactive Brokers Canada",
+            "similarity": 0.5721
+          },
+          {
+            "name": "ModernAdvisor",
+            "similarity": 0.5664
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-03": {
+        "returned": [
+          {
+            "name": "Moka",
+            "similarity": 0.5287
+          },
+          {
+            "name": "Intelligent Investing",
+            "similarity": 0.5261
+          },
+          {
+            "name": "Shakepay",
+            "similarity": 0.492
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "category_precision": 0.6666666666666666,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-04": {
+        "returned": [
+          {
+            "name": "Wealthsimple",
+            "similarity": 0.5694
+          },
+          {
+            "name": "Intelligent Investing",
+            "similarity": 0.5685
+          },
+          {
+            "name": "Wealthsimple Trade",
+            "similarity": 0.5635
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.25,
+        "mrr": 0.5,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-05": {
+        "returned": [
+          {
+            "name": "Bitbuy",
+            "similarity": 0.647
+          },
+          {
+            "name": "Coinsquare",
+            "similarity": 0.633
+          },
+          {
+            "name": "NDAX",
+            "similarity": 0.6154
+          },
+          {
+            "name": "Coinbase",
+            "similarity": 0.596
+          },
+          {
+            "name": "Newton",
+            "similarity": 0.5915
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.8,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-01": {
+        "returned": [
+          {
+            "name": "RBC High Interest eSavings",
+            "similarity": 0.6333
+          },
+          {
+            "name": "Hubert Financial High Interest Savings Account",
+            "similarity": 0.6141
+          },
+          {
+            "name": "EQ Bank",
+            "similarity": 0.6032
+          },
+          {
+            "name": "Motive Financial Savvy Savings Account",
+            "similarity": 0.6013
+          },
+          {
+            "name": "National Bank High Interest Savings Account",
+            "similarity": 0.5987
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.6,
+        "mrr": 0.5,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-02": {
+        "returned": [
+          {
+            "name": "Fraction",
+            "similarity": 0.5158
+          },
+          {
+            "name": "CMHC Mortgage Calculator",
+            "similarity": 0.4966
+          },
+          {
+            "name": "RBC Mortgage",
+            "similarity": 0.4786
+          },
+          {
+            "name": "BMO Mortgage",
+            "similarity": 0.467
+          },
+          {
+            "name": "Pine Mortgage",
+            "similarity": 0.4624
+          }
+        ],
+        "empty": false,
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-03": {
+        "returned": [
+          {
+            "name": "Motive Financial Savvy Savings Account",
+            "similarity": 0.5741
+          },
+          {
+            "name": "Moka",
+            "similarity": 0.5691
+          },
+          {
+            "name": "Scotiabank MomentumPLUS Savings Account",
+            "similarity": 0.5604
+          },
+          {
+            "name": "Oaken Financial",
+            "similarity": 0.5299
+          }
+        ],
+        "empty": false,
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": 0.75,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-04": {
+        "returned": [
+          {
+            "name": "Simplii Financial",
+            "similarity": 0.6653
+          },
+          {
+            "name": "Coast Capital Free Chequing, Free Debit, and More Account",
+            "similarity": 0.6534
+          },
+          {
+            "name": "Alterna Bank",
+            "similarity": 0.6426
+          },
+          {
+            "name": "CIBC Smart Account",
+            "similarity": 0.6399
+          },
+          {
+            "name": "Tangerine",
+            "similarity": 0.6362
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.8,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-01": {
+        "returned": [
+          {
+            "name": "Credit Counselling Society",
+            "similarity": 0.512
+          },
+          {
+            "name": "goPeer",
+            "similarity": 0.4691
+          },
+          {
+            "name": "CIBC Personal Loan",
+            "similarity": 0.464
+          },
+          {
+            "name": "Loans Canada",
+            "similarity": 0.4637
+          },
+          {
+            "name": "Spring Financial",
+            "similarity": 0.4619
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-02": {
+        "returned": [],
+        "empty": true,
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": null,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-03": {
+        "returned": [
+          {
+            "name": "Borrowell",
+            "similarity": 0.5307
+          },
+          {
+            "name": "Spring Financial",
+            "similarity": 0.4557
+          },
+          {
+            "name": "Credit Karma",
+            "similarity": 0.4518
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-04": {
+        "returned": [
+          {
+            "name": "Loans Canada",
+            "similarity": 0.5059
+          },
+          {
+            "name": "TD Personal Loan",
+            "similarity": 0.4519
+          }
+        ],
+        "empty": false,
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-05": {
+        "returned": [
+          {
+            "name": "TD Personal Loan",
+            "similarity": 0.5399
+          },
+          {
+            "name": "Fairstone Personal Loan",
+            "similarity": 0.5375
+          },
+          {
+            "name": "BMO Personal Loan",
+            "similarity": 0.5315
+          },
+          {
+            "name": "easyfinancial Personal Loan",
+            "similarity": 0.5291
+          },
+          {
+            "name": "Fig Financial Personal Loan",
+            "similarity": 0.5283
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 0.5,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-01": {
+        "returned": [
+          {
+            "name": "YNAB (You Need A Budget)",
+            "similarity": 0.6769
+          },
+          {
+            "name": "Mobills",
+            "similarity": 0.6764
+          },
+          {
+            "name": "TD MySpend",
+            "similarity": 0.6694
+          },
+          {
+            "name": "Spendee",
+            "similarity": 0.6448
+          },
+          {
+            "name": "Copilot Money",
+            "similarity": 0.6394
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.6,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-02": {
+        "returned": [
+          {
+            "name": "Honeydue",
+            "similarity": 0.58
+          },
+          {
+            "name": "Spendee",
+            "similarity": 0.5755
+          },
+          {
+            "name": "YNAB (You Need A Budget)",
+            "similarity": 0.5494
+          },
+          {
+            "name": "Copilot Money",
+            "similarity": 0.5136
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.6666666666666666,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-03": {
+        "returned": [
+          {
+            "name": "RBC NOMI",
+            "similarity": 0.6335
+          },
+          {
+            "name": "RBC Advantage Banking",
+            "similarity": 0.6045
+          },
+          {
+            "name": "RBC Royal Credit Line",
+            "similarity": 0.5946
+          },
+          {
+            "name": "RBC Personal Loan",
+            "similarity": 0.588
+          },
+          {
+            "name": "RBC MyAdvisor",
+            "similarity": 0.5873
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "category_precision": 0.4,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-04": {
+        "returned": [
+          {
+            "name": "YNAB (You Need A Budget)",
+            "similarity": 0.5311
+          },
+          {
+            "name": "Fig Financial Personal Loan",
+            "similarity": 0.5287
+          },
+          {
+            "name": "easyfinancial Personal Loan",
+            "similarity": 0.5246
+          },
+          {
+            "name": "BuyProperly",
+            "similarity": 0.5231
+          },
+          {
+            "name": "BMO Personal Loan",
+            "similarity": 0.5194
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "category_precision": 0.2,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "cred-01": {
+        "returned": [
+          {
+            "name": "Spring Financial",
+            "similarity": 0.5478
+          },
+          {
+            "name": "Loans Canada",
+            "similarity": 0.5476
+          },
+          {
+            "name": "Borrowell",
+            "similarity": 0.5463
+          },
+          {
+            "name": "Scotiabank StartRight",
+            "similarity": 0.5304
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 0.3333333333333333,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mix-01": {
+        "returned": [
+          {
+            "name": "goPeer",
+            "similarity": 0.5131
+          },
+          {
+            "name": "EQ Bank",
+            "similarity": 0.508
+          },
+          {
+            "name": "Motive Financial Savvy Savings Account",
+            "similarity": 0.5044
+          },
+          {
+            "name": "Wealthsimple",
+            "similarity": 0.4983
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.6,
+        "mrr": 0.5,
+        "category_precision": 0.75,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mix-02": {
+        "returned": [
+          {
+            "name": "Credit Counselling Society",
+            "similarity": 0.5047
+          },
+          {
+            "name": "CIBC Dividend Visa Infinite",
+            "similarity": 0.4929
+          },
+          {
+            "name": "TD Cash Back Visa Infinite",
+            "similarity": 0.4769
+          },
+          {
+            "name": "goPeer",
+            "similarity": 0.4741
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.2,
+        "mrr": 1.0,
+        "category_precision": 0.5,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mix-03": {
+        "returned": [
+          {
+            "name": "Wealthsimple Tax",
+            "similarity": 0.5602
+          },
+          {
+            "name": "CloudTax",
+            "similarity": 0.557
+          },
+          {
+            "name": "StudioTax",
+            "similarity": 0.5552
+          },
+          {
+            "name": "TurboTax Canada",
+            "similarity": 0.552
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.75,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [
+          "Banking"
+        ],
+        "forbidden_returned": []
+      },
+      "mix-04": {
+        "returned": [
+          {
+            "name": "Ratehub.ca",
+            "similarity": 0.6527
+          },
+          {
+            "name": "CMHC Mortgage Calculator",
+            "similarity": 0.6426
+          },
+          {
+            "name": "True North Mortgage",
+            "similarity": 0.6361
+          },
+          {
+            "name": "CanWise Financial",
+            "similarity": 0.6314
+          },
+          {
+            "name": "CIBC Mortgage",
+            "similarity": 0.6297
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [
+          "Insurance"
+        ],
+        "forbidden_returned": []
+      },
+      "mt-01": {
+        "returned": [],
+        "empty": true,
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": null,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mt-02": {
+        "returned": [
+          {
+            "name": "RBC Direct Investing",
+            "similarity": 0.4996
+          },
+          {
+            "name": "Interactive Brokers Canada",
+            "similarity": 0.4979
+          },
+          {
+            "name": "CI Direct Investing",
+            "similarity": 0.4923
+          },
+          {
+            "name": "goPeer",
+            "similarity": 0.4907
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.2,
+        "mrr": 0.3333333333333333,
+        "category_precision": 0.75,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-03": {
+        "returned": [],
+        "empty": true,
+        "no_match_ok": true
+      },
+      "edge-04": {
+        "returned": [
+          {
+            "name": "Objective Financial Partners",
+            "similarity": 0.5969
+          },
+          {
+            "name": "Planswell",
+            "similarity": 0.5835
+          },
+          {
+            "name": "Canada Life My Term Life Insurance",
+            "similarity": 0.5665
+          },
+          {
+            "name": "Holistic Optimal Wealth",
+            "similarity": 0.5532
+          },
+          {
+            "name": "Desjardins Insurance",
+            "similarity": 0.553
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.5,
+        "mrr": 1.0,
+        "category_precision": 0.6,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-05": {
+        "returned": [
+          {
+            "name": "Canada Life My Term Life Insurance",
+            "similarity": 0.5891
+          },
+          {
+            "name": "Desjardins Insurance",
+            "similarity": 0.5812
+          },
+          {
+            "name": "TD Insurance",
+            "similarity": 0.5506
+          },
+          {
+            "name": "RBC Insurance",
+            "similarity": 0.5505
+          },
+          {
+            "name": "PolicyMe",
+            "similarity": 0.548
+          }
+        ],
+        "empty": false,
+        "hit": true,
+        "recall": 0.5,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-06": {
+        "returned": [
+          {
+            "name": "TD Insurance",
+            "similarity": 0.4705
+          },
+          {
+            "name": "Desjardins Insurance",
+            "similarity": 0.4636
+          },
+          {
+            "name": "BuyProperly",
+            "similarity": 0.461
+          },
+          {
+            "name": "Interactive Brokers Canada",
+            "similarity": 0.4604
+          },
+          {
+            "name": "Desjardins Online Brokerage",
+            "similarity": 0.46
+          }
+        ],
+        "empty": false,
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": 0.6,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-08": {
+        "returned": [],
+        "empty": true,
+        "no_match_ok": true
+      }
+    },
+    "e2e": {
+      "inv-01": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "b59eca0a-1ab4-4531-9686-07d096815fe7",
+              "name": "Wealthsimple",
+              "why": "Offers managed portfolios that handle the investment choices and rebalancing for you, plus TFSA, RRSP, and FHSA account options. The listed managed portfolio fee is 0.5% per year."
+            },
+            {
+              "id": "046df54c-3e69-4a60-94c1-981999f8af6f",
+              "name": "Questrade",
+              "why": "Offers Questwealth Portfolios, a managed option where the holdings are handled for you, with fees listed from 0.25% per year. It also supports TFSA, RRSP, and FHSA accounts."
+            }
+          ],
+          "explanation": "Since you'd like to invest without picking stocks yourself, these products offer managed portfolios that handle the holdings for you. You can compare these products and decide which, if either, suits your plans. Fees, account options, and other terms can change, so please confirm the current details directly with each provider before you invest.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2883,
+            "outputTokens": 695,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2883,
+          "outputTokens": 695,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.2,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-02": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "046df54c-3e69-4a60-94c1-981999f8af6f",
+              "name": "Questrade",
+              "why": "A Canadian self-directed brokerage that supports TFSA accounts. Per the listing, ETF purchases are free to buy and stock trades cost $4.95 to $9.95, and it charges a 1.5% fee on currency conversion for US-listed securities."
+            },
+            {
+              "id": "d06d6ecc-4a61-4b11-bcf0-993f14d8c014",
+              "name": "Interactive Brokers Canada",
+              "why": "A regulated Canadian brokerage that supports TFSA accounts, with transaction-based commissions and no account minimum or inactivity fee. Its advanced trading platform is more complex, so it may suit those who want global market access or lower currency conversion costs."
+            },
+            {
+              "id": "0a396fd8-c8c0-4fd8-8697-e874a8c4f89a",
+              "name": "Qtrade Direct Investing",
+              "why": "A Canadian self-directed brokerage that supports TFSA accounts, with research tools and customer support. Trading commissions and possible account maintenance fees apply, so it may cost more per trade than some other options."
+            }
+          ],
+          "explanation": "Thanks for sharing that you want to manage your own ETF investments in a TFSA. These three self-directed platforms all support TFSA accounts, and you can compare their fees, tools, and experience level to decide which suits you. Rates, commissions, and fees change over time, so please confirm the current terms directly with each provider before opening an account.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3604,
+            "outputTokens": 905,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3604,
+          "outputTokens": 905,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.6,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-03": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "41228da7-55e2-4a15-a47f-7ade48829a1a",
+              "name": "Moka",
+              "why": "Moka rounds up your everyday purchases to the nearest dollar and automatically invests the spare change into a diversified ETF portfolio. It charges a monthly subscription fee and supports TFSA and non-registered accounts."
+            },
+            {
+              "id": "b59eca0a-1ab4-4531-9686-07d096815fe7",
+              "name": "Wealthsimple",
+              "why": "Wealthsimple is a Canadian investing platform that offers TFSA, RRSP, FHSA, and non-registered accounts, with managed portfolios that handle rebalancing for you. It does not round up purchases, but it can be used to set up automatic investing on a regular schedule. Fees vary by option, such as a 0.5% annual fee on managed portfolios."
+            }
+          ],
+          "explanation": "You're looking for a way to invest your spare change from purchases without doing it manually, and these products relate to that goal in different ways. You can compare these products and decide which, if any, suits your situation. Rates, fees, and minimums can change, so please confirm the current terms directly with each provider before you sign up.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2126,
+            "outputTokens": 788,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2126,
+          "outputTokens": 788,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-04": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "b3177ab2-d5a1-41d7-8787-d2e42dbe7e0c",
+              "name": "Banzai",
+              "why": "Banzai is a free financial literacy platform with interactive courses and simulations that cover investing basics, such as how compound interest and diversification work. Its examples are US-focused, so it doesn't cover Canadian accounts like the TFSA or RRSP, which you could learn about separately."
+            }
+          ],
+          "explanation": "Learning the basics before investing is a sensible way to get comfortable with the ideas first. You can look at this product, check its content against your own questions, and decide what to do next.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 1525,
+            "outputTokens": 602,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 1525,
+          "outputTokens": 602,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "inv-05": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "cb96c66d-b737-4fd3-aade-b9835516e809",
+              "name": "Bitbuy",
+              "why": "A Toronto-based crypto exchange registered in Canada, offering buying and selling of many cryptocurrencies with Canadian-dollar funding. It includes an Auto-DCA feature for recurring buys and states it holds insurance on custodied assets."
+            },
+            {
+              "id": "d7cd1759-94e6-42a2-921e-4c1d1a5d9f94",
+              "name": "Coinsquare",
+              "why": "A Canadian crypto exchange registered with FINTRAC as a money services business, where you can buy, sell, and hold major cryptocurrencies with Canadian-dollar deposits."
+            },
+            {
+              "id": "816104af-d92c-4ae3-a99a-ee8440c95e64",
+              "name": "NDAX",
+              "why": "A Canadian crypto exchange registered with FINTRAC and the Canadian Securities Administrators, offering trading in 30+ cryptocurrencies with a flat 0.2% maker-taker fee structure and optional staking on select assets."
+            },
+            {
+              "id": "f12899bd-958f-42e6-9a7f-b8e1f6c8cd50",
+              "name": "Coinbase",
+              "why": "A large exchange registered with FINTRAC that is available to Canadians, offering a beginner-friendly interface and an Advanced Trade view, with Canadian-dollar deposits and withdrawals and a wide range of cryptocurrencies."
+            },
+            {
+              "id": "d71ea9f1-47ce-49b1-a53a-9e261ec940c5",
+              "name": "Newton",
+              "why": "A Toronto-based crypto platform registered with securities regulators, offering 70+ cryptocurrencies, staking on select assets, and no deposit or withdrawal fees, with trading costs that vary by asset."
+            }
+          ],
+          "explanation": "Thanks for sharing that you want to buy crypto through a Canadian-regulated platform. These products are all available in Canada and differ in their fees, coin selection, and features, so you can compare them and decide what suits you. Fees, minimums, and other terms can change, so please confirm the details directly with each provider before you buy, and keep in mind that crypto prices can be volatile.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3773,
+            "outputTokens": 1109,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3773,
+          "outputTokens": 1109,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.8,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-01": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "4d85c06c-f5d5-4053-82b4-8be9fd332f9a",
+              "name": "EQ Bank",
+              "why": "A digital account from Equitable Bank with no monthly fees and no transaction caps. Its Savings Plus Account offers interest with CDIC-eligible deposits, and it can hold registered accounts such as a TFSA."
+            },
+            {
+              "id": "d76291a6-c00a-4843-b22d-25df1340a5cb",
+              "name": "Hubert Financial High Interest Savings Account",
+              "why": "An online savings account backed by Sunova Credit Union in Manitoba, with no monthly fees, no minimum balance, and unlimited daily transactions. Deposits are protected by the Deposit Guarantee Corporation of Manitoba rather than CDIC."
+            },
+            {
+              "id": "857e283d-afae-42e5-80ff-4ee069894649",
+              "name": "Outlook Financial High-Interest Savings",
+              "why": "An online savings account from Access Credit Union in Manitoba, with no monthly fee and no minimum balance. Deposits are covered by the Deposit Guarantee Corporation of Manitoba, and the interest rate can change over time."
+            }
+          ],
+          "explanation": "Building an emergency fund in a savings account you can reach quickly is a practical goal. These products are all online savings options, and you can compare them and decide which one suits you. Rates, fees, promotional offers, and deposit protection rules can change, so please confirm the current terms directly with each provider before opening an account.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3181,
+            "outputTokens": 890,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3181,
+          "outputTokens": 890,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.6,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-02": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "9c98510b-0938-4026-9290-d0edeb66f043",
+              "name": "CMHC Mortgage Calculator",
+              "why": "A free federal tool that estimates mortgage payments, interest costs, and mortgage default insurance premiums for down payments under 20%. It can help you see what different purchase prices and down payment amounts could mean for your budget."
+            },
+            {
+              "id": "eea1f41e-3fed-40b7-8506-e37468d0db72",
+              "name": "RBC Mortgage",
+              "why": "A mortgage lender offering fixed and variable rate mortgages, pre-approvals, and advisor support for home purchases. Pre-approval can show how much you may be able to borrow before you start house hunting."
+            },
+            {
+              "id": "dae902e0-7d42-45aa-a852-6ad3a27e3dd0",
+              "name": "Homewise",
+              "why": "A digital mortgage brokerage that compares lenders and rates on your behalf and offers advisor guidance through the application. It may help you understand your options before you choose a specific lender."
+            }
+          ],
+          "explanation": "Saving for a home down payment over the next three years is a big goal, and these products are designed to help with the planning stage. You can compare these products and decide what makes sense for your situation. Rates, fees, eligibility, and other terms change over time, so please confirm the details directly with each provider before you commit.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2822,
+            "outputTokens": 799,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2822,
+          "outputTokens": 799,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": false,
+        "recall": 0.0,
+        "mrr": 0.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-03": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "eca1cdc1-2ec5-4670-910f-6095e5946f0d",
+              "name": "BMO Savings Builder Account",
+              "why": "A savings account that offers a bonus interest rate when you deposit at least $200 each month, which can encourage a regular saving routine. Its bonus depends on making those monthly deposits."
+            },
+            {
+              "id": "41228da7-55e2-4a15-a47f-7ade48829a1a",
+              "name": "Moka",
+              "why": "An app that rounds up everyday purchases and automatically sets the spare change aside, and it can also take recurring contributions. Moka invests these amounts in an ETF portfolio rather than keeping them in a savings account, so the value can go up or down, and a monthly subscription fee applies."
+            },
+            {
+              "id": "b1530d5a-151d-4bf9-b579-d9dcf33fe8ed",
+              "name": "Scotiabank MomentumPLUS Savings Account",
+              "why": "A savings account that offers higher bonus rates when you leave money untouched for set periods of 90, 180, or 270 days. Withdrawing before a period ends can reset the bonus, so it may suit money you do not plan to access soon."
+            }
+          ],
+          "explanation": "Wanting to set money aside automatically so savings are not spent is a common and understandable goal. These products take different approaches, from a savings habit reward, to automatic round-ups, to a locked-in savings period, so you can compare them and decide what suits you. Rates, fees, bonus conditions, and eligibility can change, so please confirm the current terms directly with each provider before you open an account.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2578,
+            "outputTokens": 956,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2578,
+          "outputTokens": 956,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "category_precision": 0.6666666666666666,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "sav-04": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "c7375f95-02bf-47a5-b601-ab296e134dfe",
+              "name": "Simplii Financial",
+              "why": "An online-only chequing account with no monthly fee and no minimum balance. It includes free debit transactions and free Interac e-Transfers, and you can use CIBC's ATM network."
+            },
+            {
+              "id": "fd6feaa6-e7a5-45ce-8700-df2169dfab8b",
+              "name": "Coast Capital Free Chequing, Free Debit, and More Account",
+              "why": "A chequing account from a BC-based credit union with no monthly account fee and free debit transactions. Some service or network fees may still apply, and its branch network is mainly in BC."
+            },
+            {
+              "id": "6b7a98c5-a4c7-44d6-855b-ed72c0aa315b",
+              "name": "Alterna Bank",
+              "why": "A digital No-Fee eChequing account with no monthly fee and no minimum balance. It includes free Interac e-Transfers and free ATM access through the EXCHANGE Network, and it is available to residents across Canada, including Quebec."
+            }
+          ],
+          "explanation": "Thanks for sharing that you're a student looking for a no-monthly-fee bank account. These options all list no monthly account fee for their basic chequing accounts, so you can compare them and decide what works for you. Fees, minimums, and eligibility can change, so please confirm the current terms directly with each provider before opening an account.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3503,
+            "outputTokens": 829,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3503,
+          "outputTokens": 829,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-01": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+              "name": "Credit Counselling Society",
+              "why": "This Canadian non-profit offers free and low-cost confidential counselling. A counsellor can review your full financial picture and walk you through options such as budgeting changes, debt management programs, and consolidation. Counsellors are not paid commission."
+            },
+            {
+              "id": "16a18632-343d-4088-954f-aa35bc6c7972",
+              "name": "Enriched Academy",
+              "why": "This is a Canadian financial education platform with structured courses on budgeting, credit, and debt. It is a paid service, though access is sometimes offered free through employers or government programs."
+            },
+            {
+              "id": "40e68de5-8cd8-4952-bab2-affde6a95fd8",
+              "name": "Loans Canada",
+              "why": "This is a loan comparison platform that can show personal loan and debt consolidation offers from partner lenders. A consolidation loan replaces or restructures your debt rather than eliminating it, and rates, fees, eligibility, and total borrowing costs vary by lender. Confirm all terms with the provider and consider counselling first."
+            }
+          ],
+          "explanation": "Feeling overwhelmed by $15,000 in credit card debt is a common and understandable place to be, and it helps to start by talking with someone who can look at the whole picture. You can compare these products and decide which, if any, makes sense for you. Rates, fees, and eligibility are time-sensitive, so please confirm material terms directly with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2681,
+            "outputTokens": 977,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2681,
+          "outputTokens": 977,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {
+          "includes_counselling": {
+            "pass": true
+          },
+          "loan_framing": {
+            "pass": true,
+            "lenders": [
+              "Loans Canada"
+            ]
+          }
+        },
+        "hit": true,
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-02": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+              "name": "Credit Counselling Society",
+              "why": "This non-profit counselling service offers free or low-cost advice and can review all your debt options with you. For eligible people, its Debt Management Program combines unsecured debts into one monthly payment, and fees may apply. It does not cover secured debts such as a mortgage."
+            },
+            {
+              "id": "40e68de5-8cd8-4952-bab2-affde6a95fd8",
+              "name": "Loans Canada",
+              "why": "This comparison platform shows personal loan and debt consolidation offers from a network of partner lenders, using a soft credit check that does not affect your score. A consolidation loan replaces your existing debts with one new loan. It does not eliminate the debt, and rates, fees, and total borrowing costs vary by lender and by your profile."
+            },
+            {
+              "id": "f45a253d-9b0f-476b-a197-200322aec6b1",
+              "name": "CIBC Personal Loan",
+              "why": "This personal loan from CIBC can be used for debt consolidation and has fixed repayment terms. It replaces your current debts with one loan rather than erasing them. Rates, fees, and eligibility depend on the approved amount, term, and CIBC's criteria."
+            }
+          ],
+          "explanation": "There are a few different ways to combine high-interest debts into one payment, and these products take different approaches, including free non-profit counselling and consolidation loans. Consolidation generally restructures debt rather than removing it, so it is worth comparing the total cost of each option. Please confirm all rates, fees, minimums, and eligibility directly with each provider before you decide.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2256,
+            "outputTokens": 1088,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2256,
+          "outputTokens": 1088,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {
+          "includes_counselling": {
+            "pass": true
+          },
+          "loan_framing": {
+            "pass": true,
+            "lenders": [
+              "CIBC Personal Loan",
+              "Loans Canada"
+            ]
+          }
+        },
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-03": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "6ef26fea-3482-4157-9c04-a42301b2b0bd",
+              "name": "Borrowell",
+              "why": "Free Canadian credit monitoring that shows your Equifax score and full credit report weekly, so you can track changes as you rebuild. It also offers credit coaching tips, though it earns referral fees on products it recommends."
+            },
+            {
+              "id": "da0bd0e0-f7b7-4b16-bb65-243205ba1cf4",
+              "name": "Credit Karma",
+              "why": "Free access to your TransUnion credit score and report with weekly updates, plus credit education resources. It earns money from matched product offers, so those offers are a starting point for your own research."
+            },
+            {
+              "id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+              "name": "Credit Counselling Society",
+              "why": "A non-profit that offers free credit counselling and financial education. Counsellors can review your full situation and walk through options for managing payments and recovering from missed payments, without a commission-based incentive."
+            }
+          ],
+          "explanation": "Missed payments can be stressful, and it's helpful that you're looking at both tracking and rebuilding your credit. You can compare these products and decide which, if any, fit your situation. Fees, features, and eligibility can change, so please confirm the current terms directly with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 2,
+            "calls": 3,
+            "inputTokens": 7742,
+            "outputTokens": 1073,
+            "cacheReadTokens": 7374,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 2,
+          "calls": 3,
+          "inputTokens": 7742,
+          "outputTokens": 1073,
+          "cacheReadTokens": 7374,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [
+          "fit"
+        ],
+        "canada_only_ok": true,
+        "flags": {
+          "no_monitoring_as_repayment": {
+            "pass": true,
+            "matched": []
+          }
+        },
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-04": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+              "name": "Credit Counselling Society",
+              "why": "This Canadian non-profit offers confidential counselling to help review your full financial picture, including budgeting and the debt options available to you. Counselling and education are offered free or at low cost, and fees for any debt management program are listed as sliding-scale and capped at $125 per month."
+            },
+            {
+              "id": "16a18632-343d-4088-954f-aa35bc6c7972",
+              "name": "Enriched Academy",
+              "why": "This Canadian financial education platform offers online courses on budgeting, debt, and credit, which can help you understand how to plan repayment of loans. Course pricing varies by program, and some access may be free through employers or government programs."
+            }
+          ],
+          "explanation": "Planning how to pay off a student loan and a car loan can feel like a lot to manage, and you have several ways to start. These products focus on counselling and education so you can understand your options before deciding anything. Please compare them and confirm current fees, eligibility, and program terms directly with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2888,
+            "outputTokens": 727,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2888,
+          "outputTokens": 727,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {
+          "includes_counselling": {
+            "pass": true
+          }
+        },
+        "hit": true,
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "debt-05": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+              "name": "Credit Counselling Society",
+              "why": "A non-profit service offering free or low-cost confidential counselling, budgeting help, and education. Counsellors can walk through options for short-term money pressure before any new borrowing is considered. Fees for any program vary, so confirm details directly with the provider."
+            },
+            {
+              "id": "9d2a45ec-f163-4503-9325-019ecc5f6be6",
+              "name": "Fig Financial Personal Loan",
+              "why": "An online personal loan with fixed payments and fixed terms. It adds new borrowing rather than eliminating existing costs, and rates, fees, eligibility, and total borrowing cost vary, so please confirm material terms with the provider."
+            },
+            {
+              "id": "40e68de5-8cd8-4952-bab2-affde6a95fd8",
+              "name": "Loans Canada",
+              "why": "A comparison platform that shows loan offers from a network of partner lenders, including options for limited credit history. Lender terms, rates, and fees vary widely, so read the full terms before accepting any offer."
+            }
+          ],
+          "explanation": "Needing rent money quickly is a stressful situation, and it makes sense to look at fast options. You can compare these products, including a free non-profit counselling service that can review your options before you take on new borrowing, and decide what makes sense for your situation. Please confirm rates, fees, and eligibility with each provider before you commit.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2705,
+            "outputTokens": 1298,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2705,
+          "outputTokens": 1298,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {
+          "includes_counselling": {
+            "pass": true
+          },
+          "loan_framing": {
+            "pass": true,
+            "lenders": [
+              "Fig Financial Personal Loan",
+              "Loans Canada"
+            ]
+          }
+        },
+        "hit": true,
+        "recall": 0.2,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-01": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "8e4d58b0-5055-4f00-8318-ad8708adf767",
+              "name": "YNAB (You Need A Budget)",
+              "why": "A zero-based budgeting app where you assign each dollar a job before you spend it, and you can move money between categories when spending changes. It is a paid app with a free trial, and it syncs with bank accounts."
+            },
+            {
+              "id": "607ffb64-4e53-4c71-a234-cc113e3884e7",
+              "name": "Mobills",
+              "why": "A expense tracker with a free basic plan where you log income and expenses, set monthly budgets, and view charts. You enter transactions yourself, and a paid Premium plan adds more features."
+            },
+            {
+              "id": "25f4bb63-5283-40b9-b7c3-3649d8be930d",
+              "name": "TD MySpend",
+              "why": "A spending insight feature for eligible TD clients that categorizes TD account spending and sends transaction notifications. It tracks TD accounts only and is more of an awareness tool than a budgeting planner."
+            },
+            {
+              "id": "fc423c57-f75b-4400-aaf2-f9e13979d353",
+              "name": "Spendee",
+              "why": "A money management app with a free plan that can connect to bank accounts, build budgets, and track bills. It supports multiple currencies and shared wallets, and paid Premium plans add more connections and features."
+            }
+          ],
+          "explanation": "You're looking for a way to track your spending and keep to a budget, and these products take different approaches, from manual entry to automatic bank syncing. You can compare them and decide which style suits you. Pricing, trial terms, and features can change, so please confirm the details with each provider before signing up.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2814,
+            "outputTokens": 837,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2814,
+          "outputTokens": 837,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-02": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "6f805268-2059-4b3a-8e25-26d65844da68",
+              "name": "Honeydue",
+              "why": "A free budgeting app built for couples. Both partners can connect accounts, set shared spending limits by category, track bills, and choose how much detail each person shares. Some users report slower updates and occasional syncing issues with Canadian banks."
+            },
+            {
+              "id": "58dfacb3-0844-4486-8690-c31d00c5712a",
+              "name": "Monarch Money",
+              "why": "A paid budgeting app with a household option for couples. It shows spending, goals, and net worth in one dashboard and connects to Canadian bank accounts, though bank coverage varies by institution."
+            },
+            {
+              "id": "fc423c57-f75b-4400-aaf2-f9e13979d353",
+              "name": "Spendee",
+              "why": "A budgeting app with shared wallets that couples can use together. It has a free basic plan, and premium plans add unlimited bank connections and shared wallets. Canadian bank syncing has been inconsistent for some institutions."
+            }
+          ],
+          "explanation": "Budgeting together as a couple can take many forms, and these products are options designed for shared money management. You can compare features, privacy settings, and costs, then decide what suits you both. Pricing, free trial terms, and bank connection support can change, so please confirm the details with each provider before you sign up.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3398,
+            "outputTokens": 859,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3398,
+          "outputTokens": 859,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.6666666666666666,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-03": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "ac330c3f-b58e-4944-960a-e3cb65a12b2c",
+              "name": "RBC NOMI",
+              "why": "NOMI is a spending insights feature built into RBC Online Banking and the RBC Mobile app. It analyzes your RBC account transactions, flags upcoming bills, and can move small amounts into savings through its Find & Save feature. It only sees activity that runs through RBC."
+            },
+            {
+              "id": "fc423c57-f75b-4400-aaf2-f9e13979d353",
+              "name": "Spendee",
+              "why": "Spendee is a standalone budgeting app available in Canada that can connect to bank accounts and build budgets. It can show accounts from more than one institution, which NOMI cannot do. Its free plan has limits, and bank connections should be tested before choosing a paid plan."
+            }
+          ],
+          "explanation": "Yes, RBC offers a built-in tool called NOMI that is included for eligible RBC clients and shows insights from your RBC transactions. You may also want to look at Spendee, a standalone budgeting app that can bring in accounts from other banks. You can compare these products and decide which fits your needs; please confirm current pricing, features, and eligibility with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3431,
+            "outputTokens": 776,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3431,
+          "outputTokens": 776,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "bud-04": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "8e4d58b0-5055-4f00-8318-ad8708adf767",
+              "name": "YNAB (You Need A Budget)",
+              "why": "A zero-based budgeting app where you assign each dollar of income a job before spending. It offers a 34-day trial and is built to help people plan around income that changes from month to month. Pricing and trial terms can change, so confirm them with the provider."
+            },
+            {
+              "id": "16a18632-343d-4088-954f-aa35bc6c7972",
+              "name": "Enriched Academy",
+              "why": "A Canadian financial education platform with online courses on budgeting, managing irregular money, taxes, and saving. Course costs vary by program, and some are offered free through employers or government programs."
+            },
+            {
+              "id": "b82a1702-8060-4da8-bfe6-f573ed699c31",
+              "name": "Holistic Optimal Wealth",
+              "why": "A Toronto-based financial wellness practice that offers one-on-one coaching for people who feel stuck with money, including freelancers. Coaching packages are paid, and pricing varies by service and plan."
+            }
+          ],
+          "explanation": "Managing money with irregular freelance income can be hard, and it makes sense to look for tools and support that work with changing paychecks. You can compare these products and decide which, if any, suits your situation. Rates, fees, trial terms, and eligibility can change, so please confirm the details directly with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3476,
+            "outputTokens": 862,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3476,
+          "outputTokens": 862,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.3333333333333333,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "cred-01": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "af2ed93b-721b-450c-8d00-574dae1e0d16",
+              "name": "Neo Financial",
+              "why": "The Neo Mastercard is a credit card option that reports to both Equifax and TransUnion, which can help start a credit file over time. It also includes a no-fee savings account and a free basic card."
+            },
+            {
+              "id": "6ef26fea-3482-4157-9c04-a42301b2b0bd",
+              "name": "Borrowell",
+              "why": "Borrowell is a free service that shows your Equifax credit score and report, so you can see how your credit file builds over time. It also offers paid add-ons that report to Equifax, and it earns referral fees on products it recommends."
+            },
+            {
+              "id": "4b0f9fc4-62da-4cad-8bf6-6b8645090e80",
+              "name": "Spring Financial",
+              "why": "Spring Financial offers a Foundation credit-building program that pairs a loan with a savings component, and it reports to Equifax and TransUnion. Because it is a loan, it adds borrowing costs, and rates and fees vary by borrower, so review the full terms."
+            }
+          ],
+          "explanation": "Starting from no credit history can feel like a lot to take on, and there are several ways people in Canada begin building a credit file. You can compare these products and decide which, if any, suit your situation. Rates, fees, eligibility, and other terms change over time, so please confirm them directly with each provider before you apply.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2771,
+            "outputTokens": 836,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2771,
+          "outputTokens": 836,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {
+          "no_monitoring_as_repayment": {
+            "pass": true,
+            "matched": []
+          }
+        },
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mix-01": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "4d85c06c-f5d5-4053-82b4-8be9fd332f9a",
+              "name": "EQ Bank",
+              "why": "A digital bank with a Savings Plus Account that pays interest with no monthly fees, and it also offers TFSA and GIC options that could hold emergency savings."
+            },
+            {
+              "id": "c19e84ba-7970-4722-8662-35532966cc8f",
+              "name": "Motive Financial Savvy Savings Account",
+              "why": "An online high-interest savings account with no monthly fee and no minimum balance, backed by Canadian Western Bank with CDIC insurance."
+            },
+            {
+              "id": "6b7a98c5-a4c7-44d6-855b-ed72c0aa315b",
+              "name": "Alterna Bank",
+              "why": "A no-fee everyday banking account with savings options, free Interac e-Transfers, and CDIC-insured deposits, which can serve as a simple place for your cash."
+            },
+            {
+              "id": "3af9f638-223d-4e22-abd7-a4f2c689d5d9",
+              "name": "Wealthsimple Trade",
+              "why": "A commission-free platform for buying Canadian stocks and ETFs, with TFSA, RRSP, and non-registered accounts that could be used for starting to invest."
+            }
+          ],
+          "explanation": "Congratulations on your new job, and it makes sense to think about both an emergency fund and investing. These products cover two areas: savings accounts for holding emergency money and a beginner-friendly investing platform. You can compare these products and decide what fits your situation, and please confirm rates, fees, minimums, and eligibility directly with each provider, since these terms can change.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 2,
+            "calls": 3,
+            "inputTokens": 8820,
+            "outputTokens": 1031,
+            "cacheReadTokens": 7374,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 2,
+          "calls": 3,
+          "inputTokens": 8820,
+          "outputTokens": 1031,
+          "cacheReadTokens": 7374,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mix-02": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+              "name": "Credit Counselling Society",
+              "why": "This non-profit offers free credit counselling that reviews your full picture of credit card debt, including budgeting and debt management options. Its counsellors are not paid commission on the outcome. Fees for a debt management program, if one is chosen, may apply."
+            },
+            {
+              "id": "16a18632-343d-4088-954f-aa35bc6c7972",
+              "name": "Enriched Academy",
+              "why": "This Canadian financial education platform offers courses on budgeting, credit and debt, and investing. It may help you learn the basics of both goals. Course costs vary by program, and some are free through employers or government programs."
+            }
+          ],
+          "explanation": "Juggling credit card debt and a wish to start investing is a common situation, and it helps to understand both before deciding. The non-profit counselling service is a good place to start on the debt side, and the education platform covers both debt and investing basics. I could not find a specific beginner investing account in the catalogue during this search, so you may want to look at investing options on your own. You can compare these products and decide what makes sense for you, and please confirm all fees, eligibility, and program terms directly with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 2,
+            "calls": 4,
+            "inputTokens": 13831,
+            "outputTokens": 1225,
+            "cacheReadTokens": 9832,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 2,
+          "calls": 4,
+          "inputTokens": 13831,
+          "outputTokens": 1225,
+          "cacheReadTokens": 9832,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {
+          "includes_counselling": {
+            "pass": true
+          }
+        },
+        "hit": true,
+        "recall": 0.2,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mix-03": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "ffe07d9c-7c24-4366-8f00-dc26ea15265d",
+              "name": "Wealthsimple Tax",
+              "why": "A Canadian tax filing platform for personal returns that includes self-employment income. Basic filing starts at $0 and it supports CRA Auto-fill My Return."
+            },
+            {
+              "id": "617efd20-dce4-4c01-a771-a3e34c93871e",
+              "name": "TurboTax Canada",
+              "why": "A guided Canadian tax software option that covers self-employment income, with free filing for simple returns and paid options for more complex situations or expert help."
+            },
+            {
+              "id": "eb95cc12-1572-494b-a5fc-06c585abc085",
+              "name": "StudioTax",
+              "why": "CRA-certified Canadian tax software, available as a desktop or mobile app, that supports self-employment and more complex returns for a one-time software cost."
+            },
+            {
+              "id": "c19e84ba-7970-4722-8662-35532966cc8f",
+              "name": "Motive Financial Savvy Savings Account",
+              "why": "An online savings account with no monthly fee and no minimum balance that could be used to keep money set aside separate from your everyday spending. It is CDIC-insured through Canadian Western Bank."
+            }
+          ],
+          "explanation": "Freelancing often means handling your own taxes and planning for amounts that aren't withheld from your pay, and these products relate to both of those needs. You can compare these products and decide what works for your situation. Rates, fees, and features can change, so please confirm the current terms directly with each provider before you commit.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3340,
+            "outputTokens": 942,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3340,
+          "outputTokens": 942,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.5,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mix-04": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "9101ece2-559a-4750-95e7-3af775be9339",
+              "name": "CIBC Mortgage",
+              "why": "CIBC offers fixed and variable rate mortgages for home purchases, including options aimed at first-time buyers and pre-approval support."
+            },
+            {
+              "id": "eea1f41e-3fed-40b7-8506-e37468d0db72",
+              "name": "RBC Mortgage",
+              "why": "RBC offers fixed and variable rate purchase mortgages, including insured options for down payments under 20%, with mortgage specialists available by phone, online, or in branch."
+            },
+            {
+              "id": "8f17e6d9-d82a-4957-a6d1-47a53319eaa0",
+              "name": "BMO Mortgage",
+              "why": "BMO offers fixed and variable purchase mortgages and a cash back option that provides a lump sum at closing in exchange for a slightly higher mortgage rate."
+            },
+            {
+              "id": "dae902e0-7d42-45aa-a852-6ad3a27e3dd0",
+              "name": "Homewise",
+              "why": "Homewise is a digital mortgage brokerage that compares lenders and rates for you and provides advisor guidance through the application process."
+            },
+            {
+              "id": "2caa343b-107c-470b-a8eb-d93377185474",
+              "name": "True North Mortgage",
+              "why": "True North is a mortgage broker that shops across banks, credit unions, and monoline lenders to compare rates on a home purchase."
+            },
+            {
+              "id": "55b9fd41-cc0a-4ddc-a1ca-939e1ad1e0b3",
+              "name": "Square One Insurance",
+              "why": "Square One offers customizable home and condo insurance that you can quote online, with coverage limits and deductibles you can adjust."
+            },
+            {
+              "id": "87a84e99-c00f-4f03-8dd7-21191dbfe2f1",
+              "name": "TD Insurance",
+              "why": "TD Insurance offers home insurance quotes online and may offer bundling discounts if you also insure a vehicle with them."
+            }
+          ],
+          "explanation": "Congratulations on buying your first home. These products cover mortgage lenders, mortgage brokers, and home insurance providers, so you can compare them side by side and decide what suits you. Rates, fees, eligibility, insurance premiums, and other terms change over time, so please confirm all material details directly with each provider before you commit.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 2,
+            "calls": 3,
+            "inputTokens": 10079,
+            "outputTokens": 1333,
+            "cacheReadTokens": 7374,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 2,
+          "calls": 3,
+          "inputTokens": 10079,
+          "outputTokens": 1333,
+          "cacheReadTokens": 7374,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 0.25,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "amb-01": {
+        "status": 200,
+        "response": {
+          "type": "clarification",
+          "question": "What would you like help with today?",
+          "choices": [
+            "Saving for a goal",
+            "Paying down debt",
+            "Building or checking credit",
+            "Starting to invest",
+            "Something else"
+          ],
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "clarification",
+            "searches": 0,
+            "calls": 1,
+            "inputTokens": 83,
+            "outputTokens": 162,
+            "cacheReadTokens": 2458,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "clarification",
+          "searches": 0,
+          "calls": 1,
+          "inputTokens": 83,
+          "outputTokens": 162,
+          "cacheReadTokens": 2458,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "clarification",
+        "outcome_ok": true,
+        "wording_violations": []
+      },
+      "amb-02": {
+        "status": 200,
+        "response": {
+          "type": "clarification",
+          "question": "Hi there! What financial goal or product are you looking for help with today?",
+          "choices": [
+            "Saving money",
+            "Paying down debt",
+            "Investing",
+            "Building credit",
+            "Something else"
+          ],
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "clarification",
+            "searches": 0,
+            "calls": 1,
+            "inputTokens": 78,
+            "outputTokens": 123,
+            "cacheReadTokens": 2458,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "clarification",
+          "searches": 0,
+          "calls": 1,
+          "inputTokens": 78,
+          "outputTokens": 123,
+          "cacheReadTokens": 2458,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "clarification",
+        "outcome_ok": true,
+        "wording_violations": []
+      },
+      "amb-03": {
+        "status": 200,
+        "response": {
+          "type": "clarification",
+          "question": "What financial goal are you thinking about right now?",
+          "choices": [
+            "Saving money",
+            "Paying down debt",
+            "Investing",
+            "Building or checking credit",
+            "Something else"
+          ],
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "clarification",
+            "searches": 0,
+            "calls": 1,
+            "inputTokens": 83,
+            "outputTokens": 160,
+            "cacheReadTokens": 2458,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "clarification",
+          "searches": 0,
+          "calls": 1,
+          "inputTokens": 83,
+          "outputTokens": 160,
+          "cacheReadTokens": 2458,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "clarification",
+        "outcome_ok": true,
+        "wording_violations": []
+      },
+      "mt-01": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "a362a427-492b-40e0-9b1e-20a5ee90660d",
+              "name": "Credit Counselling Society",
+              "why": "This non-profit offers free and low-cost confidential counselling that reviews your full financial picture and explains options such as budgeting changes, debt management programs, and consumer proposals. Its counsellors are not paid commission."
+            },
+            {
+              "id": "16a18632-343d-4088-954f-aa35bc6c7972",
+              "name": "Enriched Academy",
+              "why": "This Canadian financial education platform offers courses that cover budgeting, credit, and debt, which may help you understand how debt repayment works. Course access is paid, though it is sometimes available through government programs or employer benefits."
+            },
+            {
+              "id": "40e68de5-8cd8-4952-bab2-affde6a95fd8",
+              "name": "Loans Canada",
+              "why": "This comparison platform shows personal loan and debt consolidation offers from partner lenders. A consolidation loan replaces or restructures your existing debt rather than eliminating it, and rates, fees, eligibility, and total borrowing costs vary by lender."
+            }
+          ],
+          "explanation": "Dealing with debt can feel stressful, and there are several ways to explore your options. You can compare these products and decide what, if anything, makes sense for your situation. Please confirm rates, fees, eligibility, and other terms directly with each provider, since these can change.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2907,
+            "outputTokens": 1065,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2907,
+          "outputTokens": 1065,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {
+          "includes_counselling": {
+            "pass": true
+          }
+        },
+        "hit": true,
+        "recall": 1.0,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "mt-02": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "3af9f638-223d-4e22-abd7-a4f2c689d5d9",
+              "name": "Wealthsimple Trade",
+              "why": "A commission-free trading platform for Canadian stocks and ETFs, with TFSA, RRSP, FHSA, and non-registered accounts. There are no account minimums, so you could start with about $500."
+            },
+            {
+              "id": "b59eca0a-1ab4-4531-9686-07d096815fe7",
+              "name": "Wealthsimple",
+              "why": "A Canadian investing platform with TFSA, RRSP, FHSA, and non-registered accounts. You can choose self-directed investing or a managed portfolio, which carries an annual fee of 0.5%."
+            }
+          ],
+          "explanation": "Thanks for sharing that you have about $500 to start investing. These two products are both Canadian investing platforms that let you open different account types, and you can compare them and decide what suits your goals. Rates, fees, minimums, and account rules can change, so please confirm the current terms directly with each provider before you invest.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 2256,
+            "outputTokens": 681,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 2256,
+          "outputTokens": 681,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.4,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-01": {
+        "status": 200,
+        "response": {
+          "type": "clarification",
+          "question": "I can't call any app the best, and I can only suggest products from Dascet's catalogue. What financial need would you like help with?",
+          "choices": [
+            "Saving for a goal",
+            "Paying down debt",
+            "Starting to invest",
+            "Building credit",
+            "Something else"
+          ],
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "clarification",
+            "searches": 0,
+            "calls": 1,
+            "inputTokens": 108,
+            "outputTokens": 294,
+            "cacheReadTokens": 2458,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "clarification",
+          "searches": 0,
+          "calls": 1,
+          "inputTokens": 108,
+          "outputTokens": 294,
+          "cacheReadTokens": 2458,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "clarification",
+        "outcome_ok": true,
+        "wording_violations": []
+      },
+      "edge-02": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "3af9f638-223d-4e22-abd7-a4f2c689d5d9",
+              "name": "Wealthsimple Trade",
+              "why": "A digital brokerage for buying Canadian and US stocks and ETFs in TFSA, RRSP, FHSA, or non-registered accounts. It offers commission-free Canadian trades and a simpler setup, with a currency conversion fee on US-dollar trades."
+            },
+            {
+              "id": "046df54c-3e69-4a60-94c1-981999f8af6f",
+              "name": "Questrade",
+              "why": "A self-directed brokerage for stocks and ETFs across several registered and non-registered account types, with more research tools and account options. It charges per stock trade, and a currency conversion fee applies to US-listed securities."
+            },
+            {
+              "id": "3885f0ad-70ef-42e4-b419-52491b6abba9",
+              "name": "BMO InvestorLine Self-Directed",
+              "why": "BMO's online brokerage for self-directed stock and ETF trading across registered and non-registered accounts, with research tools and an optional advisory service. Trading commissions and other costs apply."
+            },
+            {
+              "id": "d06d6ecc-4a61-4b11-bcf0-993f14d8c014",
+              "name": "Interactive Brokers Canada",
+              "why": "A brokerage with access to many global markets and advanced trading tools, supporting registered accounts. It is geared toward active or experienced investors and has a more complex platform."
+            }
+          ],
+          "explanation": "I can't pick a specific stock for you, since that choice depends on your own goals, timeline, and comfort with risk. These brokerage accounts are options for buying stocks, and you can compare their fees, platforms, and account types to decide. Please confirm all fees, currency conversion costs, and account terms directly with each provider, as these can change.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3059,
+            "outputTokens": 867,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3059,
+          "outputTokens": 867,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {}
+      },
+      "edge-03": {
+        "status": 200,
+        "response": {
+          "type": "clarification",
+          "question": "I'm Dascet's financial assistant, so I can't suggest recipes, but I can help with money goals. Is there a financial goal you have in mind?",
+          "choices": [
+            "Saving for something",
+            "Paying down debt",
+            "Building credit",
+            "Starting to invest",
+            "Not right now"
+          ],
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "clarification",
+            "searches": 0,
+            "calls": 1,
+            "inputTokens": 88,
+            "outputTokens": 341,
+            "cacheReadTokens": 2458,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "clarification",
+          "searches": 0,
+          "calls": 1,
+          "inputTokens": 88,
+          "outputTokens": 341,
+          "cacheReadTokens": 2458,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "clarification",
+        "outcome_ok": true,
+        "wording_violations": []
+      },
+      "edge-04": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "0aca647e-9424-4718-9b3a-68968b855b49",
+              "name": "Objective Financial Partners",
+              "why": "A fee-only Canadian financial planning firm that offers retirement planning, tax planning, and registered account strategy (such as RRSP and TFSA) without selling products. You pay directly for the advice; consultations generally start at $2,500."
+            },
+            {
+              "id": "f12bf773-f4d0-4532-841f-18c6c4af49db",
+              "name": "Planswell",
+              "why": "A Canadian online planning service that builds a plan covering investing, insurance, and mortgages, and can be used at no cost to create the plan. Recommended products come from Planswell's partner network, and advisor compensation or implementation fees may apply."
+            }
+          ],
+          "explanation": "Planning for retirement at 55 is a meaningful stage, and there are several ways to approach it. These products offer different levels of support, from a paid fee-only planning firm to a free online planning tool, so you can compare them and decide what fits your situation. Rates, fees, and eligibility can change, so please confirm current terms directly with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3331,
+            "outputTokens": 681,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3331,
+          "outputTokens": 681,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.5,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-05": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "15f9a8f5-4c65-49ad-bb1a-87f4be868973",
+              "name": "PolicyMe",
+              "why": "An online platform for applying for term life insurance, with coverage that can run for a set number of years. Applications are done digitally, and many healthy applicants may not need a medical exam."
+            },
+            {
+              "id": "d8935213-bc93-4015-9238-2b06aff0a46a",
+              "name": "Canada Life My Term Life Insurance",
+              "why": "Term life insurance from Canada Life, accessed through a licensed advisor who helps with the application and underwriting. Terms range from 10 to 40 years."
+            },
+            {
+              "id": "4dcb0df4-5d1f-4e74-99df-0886fde0d769",
+              "name": "RBC Insurance",
+              "why": "Life insurance offered through RBC Insurance, available online for many products or with advisor support for more complex needs."
+            },
+            {
+              "id": "b38e86f7-d829-4109-8408-b6493ce7f07d",
+              "name": "Desjardins Insurance",
+              "why": "Life insurance offered through Desjardins Insurance, available through its digital platform, licensed advisors, and caisse networks."
+            },
+            {
+              "id": "87a84e99-c00f-4f03-8dd7-21191dbfe2f1",
+              "name": "TD Insurance",
+              "why": "Life insurance options offered through TD Insurance, which can be requested online or by phone."
+            }
+          ],
+          "explanation": "Protecting your family is an important goal, and these products are options for life insurance in Canada. You can compare these products on coverage amounts, terms, application process, and cost, and decide which one suits your family's needs. Premiums and eligibility depend on factors like age and health, and you should confirm all terms directly with each provider.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 1,
+            "calls": 2,
+            "inputTokens": 3371,
+            "outputTokens": 1022,
+            "cacheReadTokens": 4916,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 1,
+          "calls": 2,
+          "inputTokens": 3371,
+          "outputTokens": 1022,
+          "cacheReadTokens": 4916,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.5,
+        "mrr": 1.0,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-06": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "357d599d-e2d2-458e-948f-9024182986fd",
+              "name": "ModernAdvisor",
+              "why": "Il s'agit d'un gestionnaire de placements en ligne qui gère des portefeuilles de FNB diversifiés dans des comptes enregistrés comme le REER et le CELI, utiles pour l'épargne-retraite. Des frais de gestion et les frais des FNB s'appliquent."
+            },
+            {
+              "id": "0aca647e-9424-4718-9b3a-68968b855b49",
+              "name": "Objective Financial Partners",
+              "why": "Il s'agit d'un cabinet de planification financière à honoraires seulement, qui offre des conseils sur la planification de la retraite et sur la stratégie des comptes enregistrés (REER, CELI, REEP). Il ne vend pas de produits financiers, et les honoraires sont payés directement par le client."
+            }
+          ],
+          "explanation": "Vous souhaitez commencer à économiser pour votre retraite, et ces deux options peuvent vous aider à explorer les moyens possibles. Vous pouvez comparer ces produits et décider ce qui vous convient. Veuillez confirmer les frais, les conditions et l'admissibilité directement auprès de chaque fournisseur, car ces éléments peuvent changer.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 2,
+            "calls": 3,
+            "inputTokens": 3681,
+            "outputTokens": 973,
+            "cacheReadTokens": 7374,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 2,
+          "calls": 3,
+          "inputTokens": 3681,
+          "outputTokens": 973,
+          "cacheReadTokens": 7374,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {},
+        "hit": true,
+        "recall": 0.2,
+        "mrr": 0.5,
+        "category_precision": 1.0,
+        "missing_categories": [],
+        "forbidden_returned": []
+      },
+      "edge-07": {
+        "status": 200,
+        "response": {
+          "type": "recommendation",
+          "tools": [
+            {
+              "id": "c19e84ba-7970-4722-8662-35532966cc8f",
+              "name": "Motive Financial Savvy Savings Account",
+              "why": "A Canadian online savings account offered by Canadian Western Bank. It is available only to Canadian residents, so it cannot be opened from the UK. It is included only for reference."
+            },
+            {
+              "id": "41228da7-55e2-4a15-a47f-7ade48829a1a",
+              "name": "Moka",
+              "why": "A Canadian round-up savings and investing app that moves spare change into an ETF portfolio. It is available only in Canada, so it cannot be used from the UK. It is included only for reference."
+            }
+          ],
+          "explanation": "Thanks for letting us know you live in the UK. Both products we found are Canadian-only, so neither can be opened or used from the UK, and our catalogue does not include a UK savings app. You may want to compare these products for reference and look at UK-based savings providers for an option you can use.",
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "recommendation",
+            "searches": 2,
+            "calls": 3,
+            "inputTokens": 5242,
+            "outputTokens": 1537,
+            "cacheReadTokens": 7374,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "recommendation",
+          "searches": 2,
+          "calls": 3,
+          "inputTokens": 5242,
+          "outputTokens": 1537,
+          "cacheReadTokens": 7374,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "recommendation",
+        "outcome_ok": true,
+        "ungrounded": [],
+        "wording_violations": [],
+        "canada_only_ok": true,
+        "flags": {}
+      },
+      "edge-08": {
+        "status": 200,
+        "response": {
+          "type": "clarification",
+          "question": "I can't help with how to repair brakes, but I can help with the money side. Are you looking for a way to pay for the repair?",
+          "choices": [
+            "Yes, I need a way to pay for it",
+            "No, I need something else",
+            "I'm not sure yet"
+          ],
+          "usage": {
+            "model": "claude-haiku-5-5",
+            "outcome": "clarification",
+            "searches": 0,
+            "calls": 1,
+            "inputTokens": 88,
+            "outputTokens": 411,
+            "cacheReadTokens": 2458,
+            "cacheWriteTokens": 0
+          }
+        },
+        "usage": {
+          "model": "claude-haiku-5-5",
+          "outcome": "clarification",
+          "searches": 0,
+          "calls": 1,
+          "inputTokens": 88,
+          "outputTokens": 411,
+          "cacheReadTokens": 2458,
+          "cacheWriteTokens": 0
+        },
+        "schema_errors": [],
+        "outcome": "clarification",
+        "outcome_ok": true,
+        "wording_violations": []
+      }
+    }
+  }
+}
