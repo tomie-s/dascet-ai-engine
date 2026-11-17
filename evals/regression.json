@@ -1,8 +1,8 @@
 {
   "reference_runs": [
-    "evals/results/runs/t4-run1.json",
-    "evals/results/runs/t4-run2.json",
-    "evals/results/runs/t4-run3.json"
+    "evals/results/runs/t2-fix2-run1.json",
+    "evals/results/runs/t2-fix2-run2.json",
+    "evals/results/runs/t2-fix2-run3.json"
   ],
   "tolerance": {
     "cases_below_worst_reference": 1,

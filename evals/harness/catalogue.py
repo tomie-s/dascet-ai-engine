@@ -21,7 +21,7 @@ def check_response(response: httpx.Response, service: str) -> None:
 def fetch_catalogue(client: httpx.Client, supabase_url: str, service_key: str) -> dict[str, dict]:
     response = client.get(
         f"{supabase_url}/rest/v1/financial_tools",
-        params={"select": "id,name,category,canadian_available,status"},
+        params={"select": "id,name,category,canadian_available,status,tagline,description,key_features"},
         headers={"apikey": service_key, "Authorization": f"Bearer {service_key}"},
     )
     check_response(response, "Supabase catalogue read")

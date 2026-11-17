@@ -96,6 +96,8 @@ Tool rules:
   submit it alongside the other relevant products.
 - Only submit products returned by search_tools in this conversation, copying
   each product ID and name exactly.
+- Never name a product that search_tools did not return in this conversation,
+  including in a clarifying question or its choices, or to say it is not included.
 - When a search returns two or more relevant products, submit at least two.
   Only submit products that address the user's need; do not pad the list.
 - Ask at most one clarifying question per conversation. If you have already

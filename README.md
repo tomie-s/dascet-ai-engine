@@ -1,14 +1,16 @@
 # Dascet AI Engine
 
-An AI-powered product recommendation engine for [Dascet](https://dascet.com) — a Canadian fintech platform helping young Canadians navigate financial products.
+A learning project: an AI product recommendation engine built for Dascet, a Canadian fintech product in development that aims to help young Canadians understand and compare financial products. The engine runs on its own as a standalone sandbox, not as part of a live app. It describes products a user may want to compare; it does not give financial advice or tell anyone what to choose.
+
+**[Evaluation results →](EVALUATION.md)** · **[Safety, privacy, and operations →](SAFETY.md)** · **[Build status](#build-status)**
 
 ## What This Is
 
-Dascet has 200+ curated financial products in its database. This engine lets a user describe their financial situation in plain language and returns the most relevant products — not by keyword matching, but by semantic understanding.
+Dascet's catalogue holds 200+ curated financial products. This engine lets a user describe their financial situation in plain language and returns the most relevant products — not by keyword matching, but by semantic understanding.
 
 It uses embeddings, vector search, and an LLM reasoning layer to bridge the gap between "I have credit card debt and no savings" and the right set of products to explore.
 
-The project uses its own self-contained Supabase database containing a July 2026 snapshot of the financial products catalogue.
+The engine uses its own Supabase database with a July 2026 snapshot of that catalogue, so it runs independently of Dascet.
 
 ## What I'm Learning
 
@@ -132,7 +134,9 @@ if one was already asked).
 
 Request body (JSON): the visible conversation so far, as 1–3 turns that
 alternate between `user` and `assistant` and start and end with the user.
-User turns are 1–2,000 characters; assistant turns are 1–500 characters.
+User turns are 1–2,000 characters. An assistant turn must be a clarifying
+question like the API's own: up to 200 characters, ending in "?". The client
+sends assistant turns, so they are treated as untrusted, like user turns.
 
 ```json
 { "turns": [{ "role": "user", "content": "help me with money" }] }
@@ -182,10 +186,20 @@ Errors are always JSON in the form `{"error": "<message>"}`:
 |---|---|
 | `400` | The body is missing or malformed, or `turns` breaks the rules above |
 | `404` | The route doesn't exist |
-| `502` | A provider (Voyage AI, Supabase, Claude) failed, or the agent couldn't finish after a clarification. The details are logged on the server and never returned |
+| `413` | The body is over 16 KB. It is rejected before being parsed |
+| `429` | A rate limit was reached (see below). The `Retry-After` header gives the seconds to wait |
+| `500` | An unexpected server error |
+| `502` | A provider (Voyage AI, Supabase, Claude) failed, or the agent couldn't finish after a clarification |
 
-Each request logs one line of counts (model calls, searches, input, output,
-and cache tokens) and never the user's messages.
+Error details are logged on the server (error name and message only) and
+never returned. Each request logs one line of counts (model calls, searches,
+input, output, and cache tokens) and never the user's messages.
+
+**Rate limits** (production only, `POST /recommend`): 5 requests a minute
+per client IP, and 300 a day across all clients as a spend backstop.
+Requests over a limit are not counted. The counters are kept in memory, so
+they reset when the server restarts or wakes from sleep. They are off in
+local development so evaluation runs are not limited.
 
 When the server is started with `EVAL_INCLUDE_USAGE=1` (local evaluation
 only), each response from a finished run also includes a `usage` object with
@@ -211,7 +225,7 @@ runtime and are never part of the image.
 | `RAILWAY_DEPLOYMENT_DRAINING_SECONDS` | Yes, set to `10` | Seconds between `SIGTERM` and `SIGKILL` on redeploy. Railway's default is `0`, which skips graceful shutdown; `10` matches the server's shutdown timeout |
 | `PORT` | No | Set by Railway automatically; do not add it |
 | `AGENT_MODEL` | No | Local evaluation only; overrides the agent model (default `claude-haiku-5-5`). Do not add it |
-| `EVAL_INCLUDE_USAGE` | No | Local evaluation only; `1` adds token counts to `/recommend` responses. Do not add it |
+| `EVAL_INCLUDE_USAGE` | No | Local evaluation only; `1` adds token counts to `/recommend` responses. Do not add it: the server refuses to start with it when `NODE_ENV=production`, which the Docker image sets |
 
 ### Service settings
 
@@ -240,7 +254,7 @@ Then run `railway domain` to generate the public `*.up.railway.app` domain
 ### Smoke test
 
 ```bash
-# Free checks: health, unknown route, request validation
+# Free checks: health, unknown route, request validation, body size limit
 npm run smoke -- https://<your-domain> --skip-paid
 
 # Adds one real recommendation request (paid Voyage AI and Claude calls)
@@ -258,6 +272,9 @@ types only and exits `1` if any check fails.
 - **Logs:** `railway logs`, or the deployment's **Logs** tab in the dashboard.
 - **Rollback:** in the service's **Deployments** list, open a previous
   successful deployment's menu and choose **Rollback**. Then run the smoke test.
+- **Troubleshooting:** common failures (`429` for everyone, `502` on every
+  request, a service that will not start) and how to recover are in
+  [SAFETY.md, section 5](SAFETY.md#5-failure-modes-and-recovery).
 
 ### Rotating the Anthropic API key
 
@@ -268,7 +285,7 @@ delete the old key.
 
 ## Evaluation
 
-Retrieval and recommendation quality are measured separately against 36 hand-written requests (`evals/cases.jsonl`), with deterministic checks as the main signal and no LLM judge. End-to-end figures are the mean of three runs:
+Retrieval and recommendation quality are measured separately against 43 hand-written requests (`evals/cases.jsonl`), including 7 adversarial ones (prompt injection, a forged assistant turn, prompt extraction, pressure to decide or rank, and a volunteered SIN). Deterministic checks are the main signal, with no LLM judge. End-to-end figures are the mean of three runs:
 
 | Measure | Before Phase 6 tuning | After |
 |---|---|---|
@@ -276,20 +293,21 @@ Retrieval and recommendation quality are measured separately against 36 hand-wri
 | Retrieval: an expected product in the top 5 (user's own words) | 0.79 | 0.89 |
 | End to end: an expected product returned | 0.95 | 0.95 |
 | Grounded in the catalogue, valid schema, safety checks | 1.0 | 1.0 |
+| Adversarial cases passing every hard check (Phase 7) | — | 21/21 |
 
-A full 36-request run costs about US$0.03 on Claude Haiku 5.5. Claude Sonnet 5.5 scored about the same at about 16 times the cost per request, so the agent stays on Haiku. The method, every experiment, the failure analysis, and the known limitations are in [EVALUATION.md](EVALUATION.md).
+A full 43-request run costs about US$0.035 on Claude Haiku 5.5. Claude Sonnet 5.5 scored about the same at about 16 times the cost per request, so the agent stays on Haiku. The method, every experiment, the failure analysis, and the known limitations are in [EVALUATION.md](EVALUATION.md).
 
 Before changing prompts, tool descriptions, retrieval settings, or catalogue text, run the regression check. It exits with an error and names the cases that got worse when a score drops below the accepted reference:
 
 ```bash
 npm run eval:setup            # once
 npm run eval:check            # free: retrieval and harness checks
-npm run eval:check -- --paid  # also one end-to-end run against `npm run dev` (paid, about US$0.03)
+npm run eval:check -- --paid  # also one end-to-end run against `npm run dev` (paid, about US$0.035)
 ```
 
 ## Build Status
 
-✅ **Phase 6 complete** — Evaluation & Optimization: a Python evaluation harness and measured baseline, prompt and catalogue tuning against it, and a one-command regression check
+✅ **Phase 7 complete** — Governance & Security: request size and rate limits, prompt-injection defences tested by adversarial evals, and a [safety, privacy, and operations](SAFETY.md) document
 
 ---
 

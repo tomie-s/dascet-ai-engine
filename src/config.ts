@@ -29,18 +29,22 @@ export class ConfigError extends Error {
  */
 export function loadConfig(env: NodeJS.ProcessEnv = process.env): Config {
   const parsed = envSchema.safeParse(env);
-
-  if (!parsed.success) {
-    throw new ConfigError(
-      parsed.error.issues.map((issue) => {
+  const issues = parsed.success
+    ? []
+    : parsed.error.issues.map((issue) => {
         const name = issue.path.join(".");
         const value = env[name];
         return value === undefined || value.trim() === ""
           ? `${name} is required`
           : `${name} is invalid (${issue.message})`;
-      })
-    );
+      });
+
+  // Usage counts are for local evaluation only and must never reach production clients.
+  if (env.NODE_ENV === "production" && env.EVAL_INCLUDE_USAGE?.trim()) {
+    issues.push("EVAL_INCLUDE_USAGE must not be set in production");
   }
+
+  if (!parsed.success || issues.length > 0) throw new ConfigError(issues);
 
   const values = parsed.data;
   return {

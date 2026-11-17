@@ -62,6 +62,26 @@ test("rejects a malformed SUPABASE_URL", () => {
   assert.match(issues[0], /^SUPABASE_URL is invalid/);
 });
 
+test("refuses EVAL_INCLUDE_USAGE in production", () => {
+  assert.deepEqual(configIssues({ ...validEnv, NODE_ENV: "production", EVAL_INCLUDE_USAGE: "1" }), [
+    "EVAL_INCLUDE_USAGE must not be set in production",
+  ]);
+});
+
+test("reports EVAL_INCLUDE_USAGE alongside other problems", () => {
+  assert.deepEqual(configIssues({ NODE_ENV: "production", EVAL_INCLUDE_USAGE: "1" }), [
+    "SUPABASE_URL is required",
+    "SUPABASE_SERVICE_ROLE_KEY is required",
+    "VOYAGE_API_KEY is required",
+    "ANTHROPIC_API_KEY is required",
+    "EVAL_INCLUDE_USAGE must not be set in production",
+  ]);
+});
+
+test("allows EVAL_INCLUDE_USAGE outside production", () => {
+  assert.doesNotThrow(() => loadConfig({ ...validEnv, EVAL_INCLUDE_USAGE: "1" }));
+});
+
 test("error message never includes secret values", () => {
   const secret = "sk-sentinel-should-not-leak";
   assert.throws(

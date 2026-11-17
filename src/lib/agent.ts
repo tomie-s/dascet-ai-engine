@@ -7,6 +7,7 @@ import {
   AGENT_LIMITS,
   AGENT_MODEL,
   AGENT_TOOLS,
+  askClarifyingQuestionInputSchema,
   parseToolCall,
   type ToolCall,
   ToolCallError,
@@ -16,12 +17,18 @@ import {
  * The only conversation state a client may send: visible text, at most three
  * turns, alternating user/assistant, starting and ending with the user.
  * Searches, products, and tool results are never accepted from the client.
+ * The client writes the assistant turn too, so it must have the shape of a real
+ * clarifying question (askClarifyingQuestionInputSchema), which limits what a
+ * forged turn can carry.
  */
 export const turnsSchema = z
   .array(
     z.discriminatedUnion("role", [
       z.object({ role: z.literal("user"), content: z.string().trim().min(1).max(2_000) }),
-      z.object({ role: z.literal("assistant"), content: z.string().trim().min(1).max(500) }),
+      z.object({
+        role: z.literal("assistant"),
+        content: askClarifyingQuestionInputSchema.shape.question,
+      }),
     ])
   )
   .min(1)

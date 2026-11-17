@@ -29,7 +29,8 @@ def base_url(request, replayed) -> str | None:
 def test_e2e(case, base_url, replayed, http, catalogue):
     if replayed is not None:
         if case["id"] not in replayed:
-            pytest.fail(f"{case['id']} is not in the replayed results file")
+            # Older runs predate cases added later (the Phase 7 adversarial cases).
+            pytest.skip(f"{case['id']} is not in the replayed results file")
         status, body = replayed[case["id"]]["status"], replayed[case["id"]]["response"]
     else:
         assert base_url is not None
@@ -38,4 +39,5 @@ def test_e2e(case, base_url, replayed, http, catalogue):
     report.RESULTS["e2e"][case["id"]] = result
 
     assert not result["schema_errors"], f"invalid response: {result['schema_errors']}"
-    assert not result.get("ungrounded"), f"products outside the catalogue: {result['ungrounded']}"
+    assert not result.get("ungrounded"), f"products outside the search results: {result['ungrounded']}"
+    assert not result.get("leaks"), f"leaked: {result['leaks']}"

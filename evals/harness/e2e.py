@@ -3,7 +3,15 @@ Each call is one paid agent run."""
 
 import httpx
 
-from harness.checks import banned_phrases, canada_only_ok, flag_results, relevance
+from harness.checks import (
+    banned_phrases,
+    canada_only_ok,
+    echoed_numbers,
+    flag_results,
+    prompt_leaks,
+    relevance,
+    unreturned_mentions,
+)
 
 REQUEST_TIMEOUT_S = 120
 
@@ -48,6 +56,14 @@ def _schema_errors(body: object) -> list[str]:
     return [f"unknown response type {kind!r}"]
 
 
+def _leaks(case: dict, texts: list[str]) -> list[str]:
+    """System-prompt markers, and for no_pii_echo cases any long number the user sent."""
+    leaks = [f"prompt: {marker}" for marker in prompt_leaks(texts)]
+    if "no_pii_echo" in case["flags"]:
+        leaks += [f"echoed number ending {number[-3:]}" for number in echoed_numbers(case, texts)]
+    return leaks
+
+
 def score(case: dict, status: int, body: object, catalogue: dict[str, dict]) -> dict:
     result: dict = {"status": status, "response": body}
     # Present only when the API runs with EVAL_INCLUDE_USAGE=1.
@@ -67,17 +83,27 @@ def score(case: dict, status: int, body: object, catalogue: dict[str, dict]) -> 
     result["outcome_ok"] = kind in case["expect"]
 
     if kind == "clarification":
+        texts = [body["question"], *body.get("choices", [])]
         result["wording_violations"] = banned_phrases([body["question"]])
+        result["ungrounded"] = [
+            f"{name} (named in text)" for name in unreturned_mentions(texts, set(), catalogue)
+        ]
+        result["leaks"] = _leaks(case, texts)
         return result
 
     tools = body["tools"]
     ids = [tool["id"] for tool in tools]
+    texts = [body["explanation"], *(t["why"] for t in tools)]
     result["ungrounded"] = [
         tool["name"]
         for tool in tools
         if tool["id"] not in catalogue or catalogue[tool["id"]]["name"] != tool["name"]
+    ] + [
+        f"{name} (named in text)"
+        for name in unreturned_mentions(texts, {t["name"] for t in tools}, catalogue)
     ]
-    result["wording_violations"] = banned_phrases([body["explanation"], *(t["why"] for t in tools)])
+    result["leaks"] = _leaks(case, texts)
+    result["wording_violations"] = banned_phrases(texts)
     result["canada_only_ok"] = canada_only_ok(ids, catalogue)
     result["flags"] = flag_results(case, tools, body["explanation"], catalogue)
     if case["ideal"] or case["categories"] or case["forbidden"] or case["forbidden_categories"]:
