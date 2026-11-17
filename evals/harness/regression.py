@@ -2,7 +2,7 @@
 
 Retrieval is deterministic (cached embeddings), so any case that loses its ideal product,
 any off-topic case that returns products, and any new forbidden product is a regression.
-End to end, schema, grounding, outcome, and safety must pass for every case; hit rate,
+End to end, schema, grounding, outcome, safety, and no-leak must pass for every case; hit rate,
 wording, and coverage may fall at most a set number of cases below the worst reference
 run, and category precision a set amount. Reference runs are re-scored with the current
 checks every time, so the reference cannot go stale when a check changes."""
@@ -16,7 +16,7 @@ from harness.settings import EVALS_DIR, REPO_ROOT
 
 CONFIG_PATH = EVALS_DIR / "regression.json"
 SOFT_METRICS = ("hit", "wording", "coverage")
-HARD_METRICS = ("schema", "grounded", "outcome", "safety")
+HARD_METRICS = ("schema", "grounded", "outcome", "safety", "no_leak")
 
 
 def load_config() -> dict:
@@ -62,8 +62,11 @@ def case_checks(results: dict[str, dict], cases_by_id: dict) -> dict[str, dict[s
         is_rec = r.get("outcome") == "recommendation"
         checks["schema"][cid] = not r["schema_errors"]
         checks["outcome"][cid] = bool(r["outcome_ok"])
-        if is_rec:
+        if "ungrounded" in r:
             checks["grounded"][cid] = not r["ungrounded"]
+        if "leaks" in r:
+            checks["no_leak"][cid] = not r["leaks"]
+        if is_rec:
             checks["safety"][cid] = bool(safety_ok(r))
         if "wording_violations" in r:
             checks["wording"][cid] = not r["wording_violations"]
@@ -83,7 +86,7 @@ def _kinds(case: dict, r: dict) -> set[str]:
     kinds = set()
     for label in report.e2e_failures(case, r):
         word = label.split(" ")[0]
-        kinds.add(word if word in ("wording", "forbidden", "ungrounded", "schema", "missing", "expected")
+        kinds.add(word if word in ("wording", "forbidden", "ungrounded", "schema", "missing", "expected", "leaked")
                   else label.split(" failed")[0])
     return kinds
 

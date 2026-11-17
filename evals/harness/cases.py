@@ -9,7 +9,7 @@ CASES_PATH = EVALS_DIR / "cases.jsonl"
 
 OUTCOMES = {"recommendation", "clarification"}
 RETRIEVAL_MODES = {"match", "no_match", "skip"}
-FLAGS = {"includes_counselling", "loan_framing", "no_monitoring_as_repayment"}
+FLAGS = {"includes_counselling", "loan_framing", "no_monitoring_as_repayment", "no_pii_echo"}
 FIELDS = {
     "id", "intent", "turns", "expect", "retrieval", "ideal", "categories",
     "required_categories", "forbidden", "forbidden_categories", "flags", "scored", "notes",

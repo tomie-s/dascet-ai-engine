@@ -48,7 +48,8 @@ def e2e_summary(results: dict[str, dict], cases_by_id: dict) -> dict:
         "cases": len(scored),
         "outcome_accuracy": _mean(r["outcome_ok"] for _, r in scored),
         "schema_valid_rate": _mean(not r["schema_errors"] for _, r in scored),
-        "grounded_rate": _mean(not r["ungrounded"] for r in recs),
+        # Clarifications are scored too: their question and choices must not name a product.
+        "grounded_rate": _mean(not r["ungrounded"] for _, r in scored if "ungrounded" in r),
         "hit_rate": _mean(r.get("hit", False) for _, r in expects_rec),
         "category_precision": _mean(r.get("category_precision") for r in recs),
         "coverage_rate": _mean(
@@ -94,14 +95,21 @@ def cost_summary(results: dict[str, dict]) -> dict | None:
 def by_intent(retrieval: dict, e2e: dict, cases: tuple[dict, ...]) -> dict:
     table: dict[str, dict] = {}
     for intent in sorted({c["intent"] for c in cases if c["scored"]}):
-        ids = [c["id"] for c in cases if c["intent"] == intent and c["scored"]]
+        group = [c for c in cases if c["intent"] == intent and c["scored"]]
+        ids = [c["id"] for c in group]
+        # Hit rate needs ideal products; cases with only forbidden products have none to hit.
+        with_ideal = {c["id"] for c in group if c["ideal"]}
         r_rows = [retrieval[i] for i in ids if i in retrieval]
         e_rows = [e2e[i] for i in ids if i in e2e]
         table[intent] = {
             "cases": len(ids),
             "retrieval_hit_at_5": _mean(r.get("hit") for r in r_rows),
             "e2e_outcome_accuracy": _mean(r["outcome_ok"] for r in e_rows),
-            "e2e_hit_rate": _mean(r.get("hit") for r in e_rows if r.get("outcome") == "recommendation"),
+            "e2e_hit_rate": _mean(
+                e2e[i].get("hit")
+                for i in ids
+                if i in e2e and i in with_ideal and e2e[i].get("outcome") == "recommendation"
+            ),
         }
     return table
 
@@ -117,6 +125,8 @@ def e2e_failures(case: dict, r: dict) -> list[str]:
         labels.append(f"ungrounded {r['ungrounded']}")
     if r.get("wording_violations"):
         labels.append(f"wording {r['wording_violations']}")
+    if r.get("leaks"):
+        labels.append(f"leaked {r['leaks']}")
     if r.get("outcome") == "recommendation" and case["ideal"] and r.get("hit") is False:
         labels.append("no ideal product")
     if r.get("canada_only_ok") is False:

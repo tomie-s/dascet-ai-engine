@@ -174,6 +174,8 @@ test("agent prompt states every numbered decision rule", () => {
 test("agent prompt states the tool rules", () => {
   assert.match(AGENT_SYSTEM_PROMPT, /Always call search_tools before submit_recommendation/);
   assert.match(AGENT_SYSTEM_PROMPT, /Only submit products returned by search_tools/);
+  assert.match(AGENT_SYSTEM_PROMPT, /Never name a product that search_tools did not return/);
+  assert.match(AGENT_SYSTEM_PROMPT, /including in a clarifying question or its choices/);
   assert.match(AGENT_SYSTEM_PROMPT, /Ask at most one clarifying question per conversation/);
   assert.match(AGENT_SYSTEM_PROMPT, /two or more relevant products, submit at least two/);
   assert.match(AGENT_SYSTEM_PROMPT, /do not pad the list/);

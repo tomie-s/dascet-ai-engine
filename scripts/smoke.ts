@@ -81,6 +81,25 @@ const checks: Check[] = [
     },
   },
   {
+    name: "POST /recommend oversized body",
+    paid: false,
+    run: async (baseUrl) => {
+      const { status, body } = await request(
+        baseUrl,
+        "/recommend",
+        {
+          method: "POST",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify({ turns: [{ role: "user", content: "x".repeat(20_000) }] }),
+        },
+        FREE_TIMEOUT_MS
+      );
+      expectStatus(status, 413);
+      if (!hasStringField(body, "error")) throw new Error("body has no error message");
+      return "413 size error";
+    },
+  },
+  {
     name: "POST /recommend real request",
     paid: true,
     run: async (baseUrl) => {
